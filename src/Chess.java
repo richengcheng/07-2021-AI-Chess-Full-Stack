@@ -1,6 +1,6 @@
 /*
- *中国象棋Java版V3.0
- *添加功能:实现了当前棋局的保存
+ *shogi Java
+ * adding function
  */
 
 import java.awt.*;
@@ -12,7 +12,7 @@ import java.io.*;
 //主类
 public class Chess{
 	public static void main(String args[]){
-		new ChessMainFrame("中国象棋：观棋不语真君子，棋死无悔大丈夫");
+		new ChessMainFrame("shogi battle");
 	}
 }
 
@@ -62,7 +62,7 @@ class ChessMainFrame extends JFrame implements ActionListener,MouseListener,Runn
 	static int Man,i;
 	
 	ChessMainFrame(){
-		new ChessMainFrame("中国象棋");
+		new ChessMainFrame("ShoGi");
 	}
 	
 	/**
@@ -123,8 +123,8 @@ class ChessMainFrame extends JFrame implements ActionListener,MouseListener,Runn
 		}
 		
 		//添加棋盘标签
-		con.add(image = new JLabel(new ImageIcon("image\\Main.GIF")));
-		image.setBounds(0,30,558,620);
+		con.add(image = new JLabel(new ImageIcon("image\\shogiBoard.jpg")));
+		image.setBounds(0,30,800,1050);
 		image.addMouseListener(this);
 		
 		//注册窗体关闭监听
@@ -139,21 +139,21 @@ class ChessMainFrame extends JFrame implements ActionListener,MouseListener,Runn
 		//窗体居中
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension frameSize = this.getSize();
-		
+
 		if (frameSize.height > screenSize.height){
 			frameSize.height = screenSize.height;
 		}
 		if (frameSize.width > screenSize.width){
 			frameSize.width = screenSize.width;
 		}
-		
+
 		this.setLocation((screenSize.width - frameSize.width) / 2 - 280 ,(screenSize.height - frameSize.height ) / 2 - 350);
 	
 		//设置
-		this.setIconImage(new ImageIcon("image\\红将.GIF").getImage());
+	//	this.setIconImage(new ImageIcon("image\\红将.GIF").getImage());
 		this.setResizable(false);
 		this.setTitle(Title);
-		this.setSize(558,670);
+		this.setSize(850,1050);
 		this.show();
 	}
 	
@@ -172,7 +172,7 @@ class ChessMainFrame extends JFrame implements ActionListener,MouseListener,Runn
 		in = new ImageIcon("image\\黑车.GIF");
 		for (i=0,k=24;i<2;i++,k+=456){		
 			play[i] = new JLabel(in);
-			play[i].setBounds(k,56,55,55);	
+			play[i].setBounds(k,70,55,55);
 			play[i].setName("车1");			
 		}	
 		
