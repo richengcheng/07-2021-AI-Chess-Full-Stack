@@ -34,9 +34,9 @@ public class PlayerInfoJpanel extends JPanel implements Runnable{
 		headPicLabel.setIcon(headIcon);
 		headPicLabel.setBounds(0, 0, 50, 50);
 		//headPicLabel.setSize(50, 50);
-		String name="我";		
+		String name="human beings";
 		if (isNameUsed) {
-			name="对手";
+			name="AI";
 		}
 		isNameUsed=true;
 		backgroundLabel=new JLabel(name);

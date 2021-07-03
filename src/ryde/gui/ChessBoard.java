@@ -8,15 +8,17 @@ import ryde.InternetChess.Chess;
 public class ChessBoard extends JButton implements Cloneable{
 	private boolean isUnderAttack=false;
 	private int coorX,coorY;
+	private int IsWaitingBorad=0;
 	private Chess chess=null;
 	public ChessBoard(){
 		setContentAreaFilled(false);
 	}
 	
-	public ChessBoard(int coorY,int coorX){
+	public ChessBoard(int coorY,int coorX,int IsWaitingBorad){
 		super();
 		this.coorX=coorX;
 		this.coorY=coorY;
+		this.IsWaitingBorad=IsWaitingBorad;
 		setContentAreaFilled(false);
 		setBorder(null);
 		setBorderPainted(false);
@@ -48,6 +50,10 @@ public class ChessBoard extends JButton implements Cloneable{
 
 	public int getCoorX() {
 		return coorX;
+	}
+
+	public int getIsWaitingBorad() {
+		return this.IsWaitingBorad;
 	}
 
 	public void setCoorX(int coorX) {

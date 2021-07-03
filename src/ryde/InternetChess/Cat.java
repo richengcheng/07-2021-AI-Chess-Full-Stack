@@ -9,7 +9,7 @@ public class Cat extends Chess {
     private int firstPlace;
 
     public Cat(int y,int x,boolean isEnemy){
-        super(y,x,"cat",400,isEnemy);
+        super(y,x,"Cat",400,isEnemy);
         firstPlace=y;
     }
 
@@ -26,7 +26,6 @@ public class Cat extends Chess {
             switch (Math.abs(betweenX)) {
                 case 0:// ↑↓
                 {
-                //    System.out.println("32323232323232323232323232323232");
                     if (Math.abs(betweenY) == 1 || Math.abs(betweenY) == 0) {
 
                         //up cat can not move ↑
@@ -45,13 +44,10 @@ public class Cat extends Chess {
                 }
                 case 1:// ↖↗↙↘
                 {
-                 //   System.out.println("7878787878787878787878778787");
                     //down cat can not move  ←→
                     if(Math.abs(betweenY) == 0){
-                       // System.out.println("7878787878787878787878778787");
                         return false;
                     }
-                 //   System.out.println("5656565565656565656565656565656565");
                     if (Math.abs(betweenY) == 1) {
                         return true;
                     }

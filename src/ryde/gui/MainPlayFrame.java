@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import  ryde.ai.AI;
 
 
 public class MainPlayFrame extends JFrame implements ActionListener {
@@ -35,15 +34,15 @@ public class MainPlayFrame extends JFrame implements ActionListener {
 	
 		//chess board
 		chessBoardPanel=new ChessBoardPanel(isEnemy,isSinglePlayer);
-		chessBoardPanel.setBounds(0, 50, 500, 500);
+		chessBoardPanel.setBounds(0, 50, 700, 500);
 		contentPane.add(chessBoardPanel);
 		//timing
 
 
 		player1InfoJpanel=new PlayerInfoJpanel(isEnemy,isEnemy);
 		player2InfoJpanel=new PlayerInfoJpanel(!isEnemy,!isEnemy);
-		player1InfoJpanel.setBounds(0, 0, 250, 50);
-		player2InfoJpanel.setBounds(250, 0, 250, 50);
+		player1InfoJpanel.setBounds(100, 0, 250, 50);
+		player2InfoJpanel.setBounds(350, 0, 250, 50);
 	 	contentPane.add(player1InfoJpanel);
 		contentPane.add(player2InfoJpanel);
 
@@ -57,11 +56,30 @@ public class MainPlayFrame extends JFrame implements ActionListener {
 		contentPane.add(backButton);
 		
 		setContentPane(contentPane);
-		setSize(510, 620);
+		setSize(700, 620);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setVisible(true);
+/**
+		if (isSinglePlayer) {
+			AI ai=new AI();
+			Thread thread=new Thread(ai);
+			thread.start();
+		}
+
+		*/
+	}
+	/**
+	 * 游戏结束，重新开始
+	 */
+//	public static void newGame(){
+//			contentPane.remove(chessBoardPanel);
+//			ChessBoardPanel chessBoardPanel=new ChessBoardPanel(isEnemy,isSinglePlayer);
+//			chessBoardPanel.setBounds(0, 50, 500, 500);
+//			contentPane.add(chessBoardPanel);
+//	}
+	
 	public void actionPerformed(ActionEvent e) {
 		System.exit(0);
 		

@@ -22,12 +22,12 @@ public class Chick extends Chess {
             betweenY = getCoorY() - click.getCoorY();
             if(betweenX==0) {
                 switch (betweenY) {
-                    case 1:// ↑
-                        if (firstPlace == 3)
+                    case 1:// ↓
+                        if (!this.isEnemy())
                             return true;
                         break;
-                    case -1:// ↓
-                        if (firstPlace == 2)
+                    case -1:// ↑
+                        if (this.isEnemy())
                             return true;
                         break;
                 }
