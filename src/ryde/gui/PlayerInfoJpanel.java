@@ -9,8 +9,8 @@ import javax.swing.JPanel;
 
 /**
  * 
- * @author Ryde_L
- *玩家头像、名称及时间
+ *
+ *
  */
 public class PlayerInfoJpanel extends JPanel implements Runnable{
 	private int time=0;
@@ -60,7 +60,7 @@ public class PlayerInfoJpanel extends JPanel implements Runnable{
 	public boolean getisEnemyChekcingy(){
 		return  this.isEnemyChekcing;
 	}
-	//计时
+	//count timing
 	public void run() {
 		while (true) {
 			if (isMyTurn) {

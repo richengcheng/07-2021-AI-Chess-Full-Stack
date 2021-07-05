@@ -8,8 +8,8 @@ import ryde.gui.ChessBoard;
 
 public class Chess implements Serializable,Cloneable{
 	private boolean isUnderAttack=false;
-	private int step=0;//步数
-	private int value=10;//棋的价值
+	private int step=0;//
+	private int value=10;//
 	private int coorX;
 	private int coorY;
 	private String name;
@@ -31,19 +31,19 @@ public class Chess implements Serializable,Cloneable{
 
 	/**
 	 * 
-	 * @param click	 当前点击的棋盘位置
-	 * @param bs	整个棋盘
-	 * @return 	所选位置是否能前进
+	 * @param click  The currently clicked board position
+	 * @param bs	Whole chessboard
+	 * @return 	Whether the selected position can be moved forward
 	 */
 	public boolean isWalkable(ChessBoard click, ChessBoard[][] bs) {
 		return false;
 	}
 	
 	/**
-	 * 返回该棋子可以前进的落脚点，并将在落脚点的对方棋子设为underAttaacked;以及将棋子攻击点保存进哈希表
+	 * Return the foothold where the piece can move forward, and set the opponent piece at the foothold as underAttaacked; and save the attack point of the piece into the hash table
 	 * 
-	 * @param bs 棋盘 
-	 * @return 以二位数数字作为坐标的List
+	 * @param bs Whole chessboard
+	 * @return   List with two-digit numbers as coordinates
 	 */
 	public ArrayList<Integer> searchWalkableWay(ChessBoard[][] bs,Map<Integer, Integer> walkWayMap){
 		ArrayList<Integer> walkWayList=new ArrayList<Integer>();
@@ -72,13 +72,13 @@ public class Chess implements Serializable,Cloneable{
 	
 	
 	/**
-	 * 棋子的特殊走法，如王车易位
+	 * The special moves of the chess pieces,
 	 * @param presentChessBoard 
-	 * 当前已选位置
+	 * Currently selected location
 	 * @param click	
-	 * 点击位置
+	 * Click location
 	 * @param bs
-	 * 整个棋盘
+	 * Whole chessboard
 	 */
 	public void specialWalkWay(ChessBoard presentChessBoard,ChessBoard click,ChessBoard[][] bs) {
 	}
@@ -94,6 +94,7 @@ public class Chess implements Serializable,Cloneable{
 		}
 		return chess;
 	}
+
 	public int getValue() {
 		return value;
 	}
@@ -164,27 +165,5 @@ public class Chess implements Serializable,Cloneable{
 	}
 
 	
-	
-//	
-//	public List<Integer> playerChessSearchWalkableWay(ChessBoard[][] bs){
-//		List<Integer> playerChessWalkWayList=new ArrayList<Integer>();
-//		//仅允许玩家调用
-//		if (!isEnemy()) {
-//			for (int i = 0; i < 8; i++) {
-//				for (int j = 0; j < 8; j++) {
-//					if (isWalkable(bs[i][j], bs)) {
-//						if (getName().equals("pawn")) {
-//							//兵吃棋和走法不一样，特别添加
-//							playerChessWalkWayList.add((i)*10+j+1, 1);
-//							playerChessWalkWayList.add((i)*10+j-1, 1);
-//						}else {
-//							playerChessWalkWayList.add(i*10+j, 1);
-//						}
-//					}
-//				}
-//			}
-//		}
-//		
-//		return playerChessWalkWayList;
-//	}
+
 }

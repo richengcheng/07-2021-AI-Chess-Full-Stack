@@ -15,9 +15,9 @@ public class Chick extends Chess {
 
     @Override
     public boolean isWalkable(ChessBoard click, ChessBoard[][] bs) {
-        // 目标位置为空或者是敌人
+        // The target location is empty or an enemy
         if (click.getChess() == null || click.getChess().isEnemy() != isEnemy()) {
-            int betweenX, betweenY;// 要前进的棋盘位置和当前位置的坐标差
+            int betweenX, betweenY;// The coordinate difference between the position of the chessboard to be advanced and the current position
             betweenX = getCoorX() - click.getCoorX();
             betweenY = getCoorY() - click.getCoorY();
             if(betweenX==0) {

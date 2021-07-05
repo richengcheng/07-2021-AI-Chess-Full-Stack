@@ -16,9 +16,9 @@ public class Cat extends Chess {
 
     @Override
     public boolean isWalkable(ChessBoard b, ChessBoard[][] bs) {
-        // 目标位置为空或者是敌人
+        //
         if (b.getChess() == null || b.getChess().isEnemy()!=isEnemy()) {
-            int betweenX, betweenY;// 要前进的棋盘位置和当前位置的坐标差
+            int betweenX, betweenY;//
             betweenX = this.getCoorX() - b.getCoorX();
             betweenY = this.getCoorY() - b.getCoorY();
 
@@ -29,12 +29,12 @@ public class Cat extends Chess {
                     if (Math.abs(betweenY) == 1 || Math.abs(betweenY) == 0) {
 
                         //up cat can not move ↑
-                        if(firstPlace==0&&((this.getCoorY()-b.getCoorY())>0)){
+                        if(isEnemy()==true&&((this.getCoorY()-b.getCoorY())>0)){
                             return false;
                         }
 
                         //down cat can not move  ↓
-                        if(firstPlace==5&&((this.getCoorY()-b.getCoorY())<0)){
+                        if(isEnemy()==false&&((this.getCoorY()-b.getCoorY())<0)){
                             return false;
                         }
 

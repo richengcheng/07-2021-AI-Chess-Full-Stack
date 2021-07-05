@@ -10,8 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 /**
- * 起始菜单界面
- * @author Ryde_L
+ *
+ *
  *
  */
 public class MenuFrame extends JFrame implements ActionListener {
@@ -48,12 +48,10 @@ public class MenuFrame extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == playSingalButton) {
 			setVisible(false);
-			// 棋盘窗口
 			mainPlayFrame = new MainPlayFrame(false, true);
 			//ChessBoardPanel.coverPanel.setVisible(false);
 		} else if (e.getSource() == playDoubleButton) {
-			
-//			//刷新
+
 //			contentPane.revalidate();
 //			repaint();
 

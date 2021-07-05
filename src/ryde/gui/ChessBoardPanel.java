@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -20,13 +21,13 @@ import ryde.InternetChess.Chick;
 
 
 /**
- * 8*8棋盘按钮
- * @author Ryde_L
+ *
  *
  */
 public class ChessBoardPanel extends JPanel implements ActionListener{
-	private ImageIcon myChickIcon,myCatIcon,myDogIcon,myLionIcon;
-	private ImageIcon AIChickIcon,AICatIcon,AIDogIcon,AILionIcon;
+	//Locale.setDefault(new Locale("en","US"));
+	private ImageIcon myChickIcon,myCatIcon,myDogIcon,myLionIcon,myChickPromoted,myCatPromoted;
+	private ImageIcon AIChickIcon,AICatIcon,AIDogIcon,AILionIcon,AIChickPromoted,AICatPromoted;
 	private ChessBoard presentChessBoard=null;
 	private JLabel chessboardLabel;
 	static JTextArea coverPanel;
@@ -42,6 +43,8 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 	//	UpPlayerCapturedChessList.add(null);
 	//	DownPlayerCapturedChessList.add(null);
 
+		this.isSinglePlayer=isSinglePlayer;
+		isPlayerTurn=!isEnemy;
 
 		setLayout(null);
 		//棋盘按钮 
@@ -81,7 +84,7 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 		coverPanel.setEditable(false);
 		coverPanel.setVisible(true);
 		add(coverPanel);
-		setComponentZOrder(coverPanel, 0);//设置遮罩在最上0
+		setComponentZOrder(coverPanel, 0);//set cover the board
 		 */
 	}
 
@@ -93,10 +96,16 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 		myCatIcon=new ImageIcon("images/catDown.png");
 		myDogIcon=new ImageIcon("images/dogDown.png");
 		myLionIcon=new ImageIcon("images/lionDown.png");
+		myChickPromoted=new ImageIcon("images/chickPromotedDown.png");
+		myCatPromoted=new ImageIcon("images/catPromotedDown.png");;
+
 		 AIChickIcon=new ImageIcon("images/chickenUp.png");
 		 AICatIcon=new ImageIcon("images/catUp.png");
 		AIDogIcon=new ImageIcon("images/dogUp.png");
 		AILionIcon=new ImageIcon("images/lionUp.png");
+		AIChickPromoted=new ImageIcon("images/chickPromotedUp.png");
+		AICatPromoted=new ImageIcon("images/catPromotedUp.png");;
+
 
 		/////////////////////////////////////////////p2
 		Cat cat1=new Cat( 0,3,!isEnemy);
@@ -139,19 +148,23 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 		chessboard[5][3].setChess(cat3);
 
 		Dog dog3=new Dog( 5,4,isEnemy);
+
 		chessboard[5][4].setIcon(myDogIcon);
 		chessboard[5][4].setChess(dog3);
 
 		Lion lion2=new Lion( 5,5,isEnemy);
+
 		chessboard[5][5].setIcon(myLionIcon);
 		chessboard[5][5].setChess(lion2);
 
 		Dog dog4=new Dog( 5,6,isEnemy);
+
 		chessboard[5][6].setIcon(myDogIcon);
 		chessboard[5][6].setChess(dog4);
 
 
 		Cat cat4=new Cat( 5,7,isEnemy);
+
 		chessboard[5][7].setIcon(myCatIcon);
 		chessboard[5][7].setChess(cat4);
 
@@ -185,7 +198,8 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 	public static void moveChess(ChessBoard presentChessBoard, ChessBoard clickBoard) {
 
 
-		if (clickBoard.getChess()!=null) {//吃到棋子,从棋子List中移除
+
+		if (clickBoard.getChess()!=null&&(presentChessBoard.getIsWaitingBorad()==0)) {//
 			Chess chessExange= clickBoard.getChess();
 			//change the chess enemy state
 			chessExange.setEnemy(!chessExange.isEnemy());
@@ -196,86 +210,45 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 				DownPlayerCapturedChessList.add(chessExange);
 
 			}
-			System.out.println("single eat enemy :CBPanel moveChess");
+			System.out.println("chess moved by moveChess function ");
+
+		}else if
+			//get waiting chess from up player
+		(clickBoard.getChess()==null &&(presentChessBoard.getIsWaitingBorad()==1)) {
+			UpPlayerCapturedChessList.remove(getIndexFromWatingList(presentChessBoard));
+		}else if
+			//get waiting chess from down player
+		(clickBoard.getChess()==null &&(presentChessBoard.getIsWaitingBorad()==2)){
+			DownPlayerCapturedChessList.remove(getIndexFromWatingList(presentChessBoard));
 		}
 
 		//update the chess
 		Chess chess=presentChessBoard.getChess();
 		Chess chess2=clickBoard.getChess();
-		chess.setCoor(clickBoard);//更新坐标
+		chess.setCoor(clickBoard);//update chess
 		chess.setStep(chess.getStep()+1);
 		Icon icon=presentChessBoard.getIcon();
-		presentChessBoard.setChess(null);//棋子移动
-		presentChessBoard.setIcon(null);//去除图案
-		presentChessBoard = clickBoard;// 当前位置更新
-		presentChessBoard.setChess(chess);//棋子移动
-		presentChessBoard.setIcon(icon);//更新棋子图案
+		presentChessBoard.setChess(null);//
+		presentChessBoard.setIcon(null);//
+		presentChessBoard = clickBoard;//
+		presentChessBoard.setChess(chess);//
+		presentChessBoard.setIcon(icon);//
 		isGameOver(chess2);
 	}
 
-	/**
-	 * 接受服务端发来的对方棋子的移动
-	 * @param present
-	 * @param click
-	 */
-/**
-	public static void acceptFromServerAndMoveChess(ChessBoard present, ChessBoard click) {
-
-		System.out.println("44444444444444444444444444444444444444");
-		ChessBoard presentChessBoard=chessboard[present.getCoorY()][present.getCoorX()];
-		ChessBoard clickBoard=chessboard[click.getCoorY()][click.getCoorX()];
-		Chess chess=presentChessBoard.getChess();
-		Chess chess2=click.getChess();
-		if (chess.getName().equals("pawn")&&chess.getStep()==0
-				&&Math.abs(present.getCoorY()-click.getCoorY())==2){
-			//兵
-			//((Pawn) chess).setFirstStep(2);
-		}
-		chess.setCoor(clickBoard);//更新坐标
-		chess.setStep(chess.getStep()+1);
-		Icon icon=presentChessBoard.getIcon();
-		presentChessBoard.setChess(null);//棋子移动
-		presentChessBoard.setIcon(null);//去除图案
-		presentChessBoard = clickBoard;// 当前位置更新
-		presentChessBoard.setChess(chess);//棋子移动
-		presentChessBoard.setIcon(icon);//更新棋子图案
-	
-		if (chess2 != null) {
-			if (chess2.getCoorY() == myKing.getCoorY() && chess2.getCoorX() == myKing.getCoorX()) {
-				System.out.println("我方获胜");
-				JOptionPane.showMessageDialog(null, "我方获胜");
-//				MainPlayFrame.newGame();
-				System.exit(0);
-			} else if (chess2.getCoorY() == enemyKing.getCoorY() && chess2.getCoorX() == enemyKing.getCoorX()) {
-				JOptionPane.showMessageDialog(null, "敌方获胜");
-				System.exit(0);
-//				MainPlayFrame.newGame();
-			}
-		}
-		
-		//我的计时开始，未考虑特殊走法
-		turnToMyTrun(!isPlayerTurn);
-	}
- */
-	/**
-	 * 
-	 */
 	public static void isGameOver(Chess chess){
 		if (chess==myKing) {
-			JOptionPane.showMessageDialog(null, "we win");
+			JOptionPane.showMessageDialog(null, "we win","infor",JOptionPane.PLAIN_MESSAGE);
 			System.exit(0);
 //			MainPlayFrame.newGame();
 		}else if (chess==enemyKing) {
-			JOptionPane.showMessageDialog(null, "we lose");
+			JOptionPane.showMessageDialog(null, "we lose","infor",JOptionPane.PLAIN_MESSAGE);
 			System.exit(0);
 //			MainPlayFrame.newGame();
 		}
 	}
 
-	/**
-	 * 转到我的回合
-	 * @param isEnable true可点击，false不可
-	 */
+
 	public static void turnToMyTrun(boolean isEnable) {
 		//System.out.println("2222222222222222222222222222222222222222222");
 		MainPlayFrame.player1InfoJpanel.setMyTurn(isEnable);
@@ -283,10 +256,7 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 	//	ChessBoardPanel.coverPanel.setVisible(!isEnable);
 		isPlayerTurn = isEnable;
 	}
-	
-	/**
-	 * 点击棋盘
-	 */
+
 
 	public void actionPerformed(ActionEvent e) {
    //  System.out.println("3233333333333333333333333333333333333333");
@@ -295,7 +265,7 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 		System.out.println(((ChessBoard) e.getSource()).getCoorX());
 		System.out.println(((ChessBoard) e.getSource()).getCoorY());
 		//System.out.println(presentChessBoard.getChess().getName());
-		//若当前有已选的棋盘位置
+
 
 
 		// checking if it is for down player
@@ -333,18 +303,18 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 							System.out.println("can not move");
 						}
 					  }
-					}else {
+					} else {
 						System.out.println("can not move");
 					}
-
 
 				}
 				// if the current Chess board is at up players waiting chess board
 				// and must click at main play area
-				else if(presentChessBoard.getIsWaitingBorad()==1 && clickBoard.getIsWaitingBorad()==0 ){
+				else if(presentChessBoard.getIsWaitingBorad()==2 && clickBoard.getIsWaitingBorad()==0 ){
 					System.out.println("544444444444444444444444444444444444");
 					// there need to check more
 					moveChess(presentChessBoard, clickBoard);
+					turnToMyTrun(!isPlayerTurn);
 				}
 			} else {// get a new presentChessBoard from the main board area or the option chess area
 				if (clickBoard.getChess() != null && (!clickBoard.getChess().isEnemy())||clickBoard.getIsWaitingBorad()==2) {
@@ -360,28 +330,46 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 			//System.out.println("544444444444444444444444444444444444");
 			if (presentChessBoard != null && presentChessBoard.getChess() != null) {//原来的棋盘点上不为空
 			//	System.out.println("566666666666666666666666666666");
-				if (clickBoard != presentChessBoard) {
-					//所以要去down player
-					boolean walkable = presentChessBoard.getChess().isWalkable(clickBoard, chessboard);
-				//	System.out.println("2233333333333333333333333333333333333333");
-					//点击位置可以前进
-					if (walkable) {
-						moveChess(presentChessBoard, clickBoard);
-						//我的回合结束，停止计时
-						turnToMyTrun(!isPlayerTurn);
-					} else if (clickBoard.getChess() != null && clickBoard.getChess().isEnemy()) {
-						presentChessBoard = clickBoard;// 更换操作棋子
-						System.out.println("change the operated chess");
-					} else if (presentChessBoard.getChess() != null && presentChessBoard.getChess().isHasSpecialWalkWay()) {
-						presentChessBoard.getChess().specialWalkWay(presentChessBoard, clickBoard, chessboard);
-						System.out.println("special move");
-					} else {
+				if(presentChessBoard.getIsWaitingBorad()==0 ) {
+					if (clickBoard.getIsWaitingBorad() == 0) {
+						if (clickBoard != presentChessBoard) {
+							//所以要去down player
+							boolean walkable = presentChessBoard.getChess().isWalkable(clickBoard, chessboard);
+							//	System.out.println("2233333333333333333333333333333333333333");
+							//点击位置可以前进
+							if (walkable) {
+								moveChess(presentChessBoard, clickBoard);
+								//我的回合结束，停止计时
+								turnToMyTrun(!isPlayerTurn);
+							} else if (clickBoard.getChess() != null && clickBoard.getChess().isEnemy()) {
+								presentChessBoard = clickBoard;// 更换操作棋子
+								System.out.println("change the operated chess");
+							} else if (presentChessBoard.getChess() != null && presentChessBoard.getChess().isHasSpecialWalkWay()) {
+								presentChessBoard.getChess().specialWalkWay(presentChessBoard, clickBoard, chessboard);
+								System.out.println("special move");
+							} else {
+								System.out.println("can not move");
+							}
+						}
+					}else {
 						System.out.println("can not move");
 					}
+
 				}
-			} else {//过后尝试和前面的合并
-				//the chess must be the up players chess
-				if (clickBoard.getChess() != null && clickBoard.getChess().isEnemy()) {
+				// if the current Chess board is at up players waiting chess board
+				// and must click at main play area
+				else if(presentChessBoard.getIsWaitingBorad()==1 && clickBoard.getIsWaitingBorad()==0 ){
+					System.out.println("544444444444444444444444444444444444");
+					// there need to check more
+					moveChess(presentChessBoard, clickBoard);
+					turnToMyTrun(!isPlayerTurn);
+				}
+
+			} else {
+				// update the presentChessBoard
+				//the chess must be the AI players chess
+				// get a new presentChessBoard from the main board area or the option chess area
+				if (clickBoard.getChess() != null && (clickBoard.getChess().isEnemy())||clickBoard.getIsWaitingBorad()==1) {
 					presentChessBoard = clickBoard;// 当前操作位置更新
 				}
 			}
@@ -395,14 +383,30 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 	}
 
 	public  void updateCapturedChessList(){
-		//becasue the k=0 is null
+		//clear waiting board
+
+		for (int i = 0; i < 6; i++) {
+			for (int j = 0; j < 3; j++) {
+
+					chessboard[i][j].setChess(null);
+					chessboard[i][j].setIcon(null);
+			}
+		}
+
+		for (int i = 5; i > 2; i--) {
+			for (int j = 10; j > 7; j--) {
+					chessboard[i][j].setChess(null);
+					chessboard[i][j].setIcon(null);
+
+			}
+		}
+
 
 		System.out.println("UpPlayerCapturedChessList"+UpPlayerCapturedChessList.size());
 		System.out.println("DownPlayerCapturedChessList"+DownPlayerCapturedChessList.size());
 
-		Icon icon=presentChessBoard.getIcon();
+		//set chess
 		int k=0;
-
 
 			  for (int i = 0; i < 6; i++) {
 				  for (int j = 0; j < 3; j++) {
@@ -428,6 +432,40 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 		}
 
 	};
+
+	public static int getIndexFromWatingList(ChessBoard presentChessBoard){
+		int k=0;
+		if(presentChessBoard.getIsWaitingBorad()==1){
+
+			for (int i = 0; i < 6; i++) {
+				for (int j = 0; j < 3; j++) {
+					if(presentChessBoard.getCoorX()==j&&presentChessBoard.getCoorY()==i){
+						return k;
+					}
+					k++;
+				}
+			}
+		}
+
+		k=0;
+
+		if(presentChessBoard.getIsWaitingBorad()==2){
+
+			for (int i = 5; i > 2; i--) {
+				for (int j = 10; j > 7; j--) {
+					if(presentChessBoard.getCoorX()==j&&presentChessBoard.getCoorY()==i){
+						return k;
+					}
+					k++;
+				}
+			}
+		}
+
+		//it is useless return;
+		return k;
+
+
+	}
 
 	//get image Icon for waiting chess
 	public ImageIcon getChessImage(Chess chess){

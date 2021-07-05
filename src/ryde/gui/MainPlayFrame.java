@@ -71,7 +71,7 @@ public class MainPlayFrame extends JFrame implements ActionListener {
 		*/
 	}
 	/**
-	 * 游戏结束，重新开始
+	 * game over and start new game
 	 */
 //	public static void newGame(){
 //			contentPane.remove(chessBoardPanel);

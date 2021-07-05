@@ -15,9 +15,9 @@ public class Dog extends Chess {
 
     @Override
     public boolean isWalkable(ChessBoard b, ChessBoard[][] bs) {
-        // 目标位置为空或者是敌人
+        // The target location is empty or an enemy
         if (b.getChess() == null || b.getChess().isEnemy()!=isEnemy()) {
-            int betweenX, betweenY;// 要前进的棋盘位置和当前位置的坐标差
+            int betweenX, betweenY;// The coordinate difference between the position of the chessboard to be advanced and the current position
             betweenX = this.getCoorX() - b.getCoorX();
             betweenY = this.getCoorY() - b.getCoorY();
 
@@ -35,11 +35,11 @@ public class Dog extends Chess {
                 //    System.out.println("5656565565656565656565656565656565");
                     if (Math.abs(betweenY) == 1 || Math.abs(betweenY) == 0) {
                         //up dog can not move  ↖↗
-                        if(firstPlace==0&&((this.getCoorY()-b.getCoorY())>0)){
+                        if(isEnemy()==true&&((this.getCoorY()-b.getCoorY())>0)){
                             return false;
                         }
                         //down dog can not move  ↙↘
-                        if(firstPlace==5&&((this.getCoorY()-b.getCoorY())<0)){
+                        if(isEnemy()==false&&((this.getCoorY()-b.getCoorY())<0)){
                             return false;
                         }
                         return true;
