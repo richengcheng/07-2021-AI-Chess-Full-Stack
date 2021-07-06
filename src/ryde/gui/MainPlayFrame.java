@@ -61,14 +61,14 @@ public class MainPlayFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setVisible(true);
-/**
+
 		if (isSinglePlayer) {
-			AI ai=new AI();
-			Thread thread=new Thread(ai);
-			thread.start();
+		//	AI ai=new AI();
+		//	Thread thread=new Thread(ai);
+		//	thread.start();
 		}
 
-		*/
+
 	}
 	/**
 	 * game over and start new game
