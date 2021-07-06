@@ -97,14 +97,14 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 		myDogIcon=new ImageIcon("images/dogDown.png");
 		myLionIcon=new ImageIcon("images/lionDown.png");
 		myChickPromoted=new ImageIcon("images/chickPromotedDown.png");
-		myCatPromoted=new ImageIcon("images/catPromotedDown.png");;
+		myCatPromoted=new ImageIcon("images/catPromotedDown.png");
 
 		 AIChickIcon=new ImageIcon("images/chickenUp.png");
 		 AICatIcon=new ImageIcon("images/catUp.png");
 		AIDogIcon=new ImageIcon("images/dogUp.png");
 		AILionIcon=new ImageIcon("images/lionUp.png");
 		AIChickPromoted=new ImageIcon("images/chickPromotedUp.png");
-		AICatPromoted=new ImageIcon("images/catPromotedUp.png");;
+		AICatPromoted=new ImageIcon("images/catPromotedUp.png");
 
 
 		/////////////////////////////////////////////p2
@@ -198,11 +198,13 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 	public static void moveChess(ChessBoard presentChessBoard, ChessBoard clickBoard) {
 
 
-
+        // if current board contain a chess and this board is main working board
 		if (clickBoard.getChess()!=null&&(presentChessBoard.getIsWaitingBorad()==0)) {//
 			Chess chessExange= clickBoard.getChess();
 			//change the chess enemy state
 			chessExange.setEnemy(!chessExange.isEnemy());
+			//set the chess to be no promoted because it is the chess dead
+			chessExange.setIsPromoted(false);
 			if (clickBoard.getChess().isEnemy()) {
 				UpPlayerCapturedChessList.add(chessExange);
 
@@ -228,12 +230,13 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 		chess.setCoor(clickBoard);//update chess
 		chess.setStep(chess.getStep()+1);
 		Icon icon=presentChessBoard.getIcon();
-		presentChessBoard.setChess(null);//
-		presentChessBoard.setIcon(null);//
+		presentChessBoard.setChess(null);//clean the chess at this current board
+		presentChessBoard.setIcon(null);//clean the icon at this current board
 		presentChessBoard = clickBoard;//
-		presentChessBoard.setChess(chess);//
-		presentChessBoard.setIcon(icon);//
+		presentChessBoard.setChess(chess);//set new chess at current board
+		presentChessBoard.setIcon(icon);// set new icon at current board
 		isGameOver(chess2);
+		checkIsPromoted(presentChessBoard);// check if the chess is promoted
 	}
 
 	public static void isGameOver(Chess chess){
@@ -514,6 +517,30 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 	public static boolean isPlayerTurn() {
 		return isPlayerTurn;
 	}
+
+	public  static void checkIsPromoted(ChessBoard presentChessBoard ){
+		//check if it is the chess that have promoted fucntion
+		if (presentChessBoard.getChess().getName() == "Chick") {
+			//check if this board can lead chess promoted
+			if(presentChessBoard.getChess().checkIsPromotedNow()) {
+				presentChessBoard.setIcon(null);//clean the icon at this current board
+				if (presentChessBoard.getChess().isEnemy()) {
+					presentChessBoard.setIcon(new ImageIcon("images/ChickPromotedUp.png"));// set new icon at current board
+				}else {
+					presentChessBoard.setIcon(new ImageIcon("images/ChickPromotedDown.png"));// set new icon at current board
+				}
+			}
+		}else if(presentChessBoard.getChess().getName() == "Cat"){
+			if(presentChessBoard.getChess().checkIsPromotedNow()){
+				presentChessBoard.setIcon(null);//clean the icon at this current board
+				if(presentChessBoard.getChess().isEnemy()) {
+					presentChessBoard.setIcon(new ImageIcon("images/catPromotedUp.png"));// set new icon at current board
+				}else {
+					presentChessBoard.setIcon(new ImageIcon("images/catPromotedDown.png"));// set new icon at current board
+				}
+			}
+		}
+	};
 
 	public static void setPlayerTurn(boolean isPlayerTurn) {
 		ChessBoardPanel.isPlayerTurn = isPlayerTurn;

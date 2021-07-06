@@ -15,6 +15,7 @@ public class Chess implements Serializable,Cloneable{
 	private String name;
 	private boolean isEnemy;
 	private boolean hasSpecialWalkWay;
+	private boolean IsPromoted=false;
 
 	public Chess() {
 
@@ -27,6 +28,7 @@ public class Chess implements Serializable,Cloneable{
 		this.isEnemy = isEnemy;
 		this.value=value;
 		hasSpecialWalkWay = false;
+		IsPromoted=false;
 	}
 
 	/**
@@ -69,7 +71,11 @@ public class Chess implements Serializable,Cloneable{
 		}
 		return walkWayList;
 	}
-	
+
+
+	public boolean checkIsPromotedNow(){
+		return false;
+	}
 	
 	/**
 	 * The special moves of the chess pieces,
@@ -101,6 +107,10 @@ public class Chess implements Serializable,Cloneable{
 
 	public void setValue(int value) {
 		this.value = value;
+	}
+
+	public void setIsPromoted(boolean value) {
+		this.IsPromoted = value;
 	}
 
 	public boolean isEnemy() {
