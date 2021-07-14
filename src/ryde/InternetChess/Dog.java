@@ -30,6 +30,7 @@ public class Dog extends Chess {
                         return true;
                     break;
                 }
+
                 case 1:// ←→↖↗↙↘
                 {
                 //    System.out.println("5656565565656565656565656565656565");

@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
+import ryde.ai.AI;
 
 public class MainPlayFrame extends JFrame implements ActionListener {
 
@@ -51,7 +51,7 @@ public class MainPlayFrame extends JFrame implements ActionListener {
 
 		
 		backButton=new JButton("Exit");
-		backButton.setBounds(0, 555, 500, 30);
+		backButton.setBounds(0, 555, 700, 30);
 		backButton.addActionListener(this);
 		contentPane.add(backButton);
 		
@@ -63,9 +63,9 @@ public class MainPlayFrame extends JFrame implements ActionListener {
 		setVisible(true);
 
 		if (isSinglePlayer) {
-		//	AI ai=new AI();
-		//	Thread thread=new Thread(ai);
-		//	thread.start();
+			AI ai=new AI();
+			Thread thread=new Thread(ai);
+			thread.start();
 		}
 
 

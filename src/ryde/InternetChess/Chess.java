@@ -47,24 +47,19 @@ public class Chess implements Serializable,Cloneable{
 	 * @param bs Whole chessboard
 	 * @return   List with two-digit numbers as coordinates
 	 */
+
 	public ArrayList<Integer> searchWalkableWay(ChessBoard[][] bs,Map<Integer, Integer> walkWayMap){
 		ArrayList<Integer> walkWayList=new ArrayList<Integer>();
 		for (int i = 0; i < 6; i++) {
-			for (int j = 0; j < 5; j++) {
+			for (int j = 3; j < 8; j++) {
 				if (isWalkable(bs[i][j], bs)) {
+					//the current board of chess is not null and also
 					if (bs[i][j].getChess()!=null&&bs[i][j].getChess().isEnemy()!=this.isEnemy()) {
 						bs[i][j].getChess().setUnderAttack(true);
 					}
 					walkWayList.add(i*10+j);
 
-					/**
-					if (getName().equals("pawn")) {
-						//兵吃棋和走法不一样，特别添加
-						walkWayMap.put(i*10+j+1, getCoorY()*10+getCoorX());
-						walkWayMap.put(i*10+j-1, getCoorY()*10+getCoorX());
-					}*/
-
-						walkWayMap.put(i*10+j, getCoorY()*10+getCoorX());
+					walkWayMap.put(i*10+j, getCoorY()*10+getCoorX());
 
 				}
 			}
@@ -87,6 +82,7 @@ public class Chess implements Serializable,Cloneable{
 	 * Whole chessboard
 	 */
 	public void specialWalkWay(ChessBoard presentChessBoard,ChessBoard click,ChessBoard[][] bs) {
+
 	}
 
 	@Override
