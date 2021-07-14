@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import ryde.ai.AI;
+import ryde.ai.MiddleLevelAI;
 
 public class MainPlayFrame extends JFrame implements ActionListener {
 
@@ -63,8 +63,8 @@ public class MainPlayFrame extends JFrame implements ActionListener {
 		setVisible(true);
 
 		if (isSinglePlayer) {
-			AI ai=new AI();
-			Thread thread=new Thread(ai);
+			MiddleLevelAI middleLevelAI=new MiddleLevelAI();
+			Thread thread=new Thread(middleLevelAI);
 			thread.start();
 		}
 

@@ -27,8 +27,8 @@ import ryde.battle.ChessInfo;
  */
 public class ChessBoardPanel extends JPanel implements ActionListener{
 	//Locale.setDefault(new Locale("en","US"));
-	private ImageIcon myChickIcon,myCatIcon,myDogIcon,myLionIcon,myChickPromoted,myCatPromoted;
-	private ImageIcon AIChickIcon,AICatIcon,AIDogIcon,AILionIcon,AIChickPromoted,AICatPromoted;
+	private static ImageIcon myChickIcon,myCatIcon,myDogIcon,myLionIcon,myChickPromoted,myCatPromoted;
+	private static ImageIcon AIChickIcon,AICatIcon,AIDogIcon,AILionIcon,AIChickPromoted,AICatPromoted;
 	private ChessBoard presentChessBoard=null;
 	private JLabel chessboardLabel;
 	//private ChessInfo chessInfo=null;
@@ -37,13 +37,12 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 	private static Chess enemyKing;
 	public static boolean isSinglePlayer,isPlayerTurn;
 	public static  ChessBoard [][]  chessboard;
-	public static List<Chess> UpPlayerCapturedChessList=new ArrayList<Chess>();
-	public static List<Chess> DownPlayerCapturedChessList=new ArrayList<Chess>();
+	//public static List<Chess> UpPlayerCapturedChessList=new ArrayList<Chess>();
+	//public static List<Chess> DownPlayerCapturedChessList=new ArrayList<Chess>();
 
 
 	public ChessBoardPanel(boolean isEnemy,boolean isSinglePlayer){
-	//	UpPlayerCapturedChessList.add(null);
-	//	DownPlayerCapturedChessList.add(null);
+
 
 		//at beginning the IsEnemy is false
 		this.isSinglePlayer=isSinglePlayer;
@@ -232,25 +231,24 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 			//	System.out.println("999999999999999999999999999999999999999999999999999999999999999999999999999999999991");
 
 				ChessInfo.playerChessList.remove(chessExange2);
-				UpPlayerCapturedChessList.add(chessExange);
+				ChessInfo.AICapturedPieceList.add(chessExange);
 			}else {
 			//	System.out.println("999999999999999999999999999999999999999999999999999999999999999999999999999999999992");
 
 			//	ChessInfo.playerChessList.remove(chessExange2);
 				ChessInfo.AIChessList.remove(chessExange2);
-				DownPlayerCapturedChessList.add(chessExange);
+				ChessInfo.PlayerCapturedPieceList.add(chessExange);
 
 			}
 			System.out.println("chess moved by moveChess function ");
 
-		}else if
-			//get waiting chess from up player
+		}else if//get waiting chess from up player
 		(clickBoard.getChess()==null &&(presentChessBoard.getIsWaitingBorad()==1)) {
-			UpPlayerCapturedChessList.remove(getIndexFromWatingList(presentChessBoard));
+			ChessInfo.AICapturedPieceList.remove(getIndexFromWatingList(presentChessBoard));
 		}else if
 			//get waiting chess from down player
 		(clickBoard.getChess()==null &&(presentChessBoard.getIsWaitingBorad()==2)){
-			DownPlayerCapturedChessList.remove(getIndexFromWatingList(presentChessBoard));
+			ChessInfo.PlayerCapturedPieceList.remove(getIndexFromWatingList(presentChessBoard));
 		}
 
 		//update the chess
@@ -266,6 +264,9 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 		presentChessBoard.setIcon(icon);// set new icon at current board
 		isGameOver(chess2);
 		checkIsPromoted(presentChessBoard);// check if the chess is promoted
+
+		updateCapturedChessList();
+
 	}
 
 	public static void isGameOver(Chess chess){
@@ -291,6 +292,8 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 
 
 	public void actionPerformed(ActionEvent e) {
+
+		updateCapturedChessList();
    //  System.out.println("3233333333333333333333333333333333333333");
 		ChessBoard clickBoard=(ChessBoard) e.getSource();//当前所点击的位置
 	//	System.out.println(clickBoard);
@@ -428,7 +431,8 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 		//王被将军
 	}
 
-	public  void updateCapturedChessList(){
+
+	public  static void updateCapturedChessList(){
 		//clear waiting board
 
 		for (int i = 0; i < 6; i++) {
@@ -448,17 +452,13 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 		}
 
 
-	//	System.out.println("UpPlayerCapturedChessList"+UpPlayerCapturedChessList.size());
-	//	System.out.println("DownPlayerCapturedChessList"+DownPlayerCapturedChessList.size());
-
 		//set chess
 		int k=0;
-
 			  for (int i = 0; i < 6; i++) {
 				  for (int j = 0; j < 3; j++) {
-					  if ( k<UpPlayerCapturedChessList.size()&& UpPlayerCapturedChessList.get(k) != null ) {
-						chessboard[i][j].setChess(UpPlayerCapturedChessList.get(k));
-						chessboard[i][j].setIcon(getChessImage(UpPlayerCapturedChessList.get(k)));
+					  if ( k<ChessInfo.AICapturedPieceList.size()&& ChessInfo.AICapturedPieceList.get(k) != null ) {
+						chessboard[i][j].setChess(ChessInfo.AICapturedPieceList.get(k));
+						chessboard[i][j].setIcon(getChessImage(ChessInfo.AICapturedPieceList.get(k)));
 						k++;
 					}
 				 }
@@ -468,9 +468,9 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 
 			   for (int i = 5; i > 2; i--) {
 				  for (int j = 10; j > 7; j--) {
-					  if ( k<DownPlayerCapturedChessList.size()&& DownPlayerCapturedChessList.get(k) != null ) {
-						chessboard[i][j].setChess(DownPlayerCapturedChessList.get(k));
-						chessboard[i][j].setIcon(getChessImage(DownPlayerCapturedChessList.get(k)));
+					  if ( k<ChessInfo.PlayerCapturedPieceList.size()&& ChessInfo.PlayerCapturedPieceList.get(k) != null ) {
+						chessboard[i][j].setChess(ChessInfo.PlayerCapturedPieceList.get(k));
+						chessboard[i][j].setIcon(getChessImage(ChessInfo.PlayerCapturedPieceList.get(k)));
 						k++;
 				  }
 
@@ -515,7 +515,7 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 	}
 
 	//get image Icon for waiting chess
-	public ImageIcon getChessImage(Chess chess){
+	public static ImageIcon getChessImage(Chess chess){
 
 		if(chess.getName()=="Dog"){
 			if(chess.isEnemy()){
