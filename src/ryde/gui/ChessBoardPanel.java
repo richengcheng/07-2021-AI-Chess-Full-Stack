@@ -74,7 +74,8 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 				chessboard[i][j].addActionListener(this);
 				add(chessboard[i][j]);
 			}
-		}		
+		}
+
 		presentChessBoard=chessboard[3][5];
 		initAllChesses(isEnemy);
 		chessboardLabel=new JLabel(new ImageIcon("images/shogiBoard.jpg"));
@@ -228,12 +229,10 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 			//set the chess to be no promoted because it is the chess dead
 			chessExange.setIsPromoted(false);
 			if (clickBoard.getChess().isEnemy()) {
-			//	System.out.println("999999999999999999999999999999999999999999999999999999999999999999999999999999999991");
 
 				ChessInfo.playerChessList.remove(chessExange2);
 				ChessInfo.AICapturedPieceList.add(chessExange);
 			}else {
-			//	System.out.println("999999999999999999999999999999999999999999999999999999999999999999999999999999999992");
 
 			//	ChessInfo.playerChessList.remove(chessExange2);
 				ChessInfo.AIChessList.remove(chessExange2);
@@ -242,12 +241,20 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 			}
 			System.out.println("chess moved by moveChess function ");
 
-		}else if//get waiting chess from up player
+		}else if//Set captured piece to AI
 		(clickBoard.getChess()==null &&(presentChessBoard.getIsWaitingBorad()==1)) {
+            Chess chess = ChessInfo.AICapturedPieceList.get(getIndexFromWatingList(presentChessBoard));
+			chess.setCoor(clickBoard);
+
+			ChessInfo.AIChessList.add(chess);
 			ChessInfo.AICapturedPieceList.remove(getIndexFromWatingList(presentChessBoard));
-		}else if
-			//get waiting chess from down player
+		}else if//Set captured piece to player
 		(clickBoard.getChess()==null &&(presentChessBoard.getIsWaitingBorad()==2)){
+
+			Chess chess = ChessInfo.PlayerCapturedPieceList.get(getIndexFromWatingList(presentChessBoard));
+			chess.setCoor(clickBoard);
+
+			ChessInfo.playerChessList.add(chess);
 			ChessInfo.PlayerCapturedPieceList.remove(getIndexFromWatingList(presentChessBoard));
 		}
 
@@ -262,10 +269,17 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 		presentChessBoard = clickBoard;//
 		presentChessBoard.setChess(chess);//set new chess at current board
 		presentChessBoard.setIcon(icon);// set new icon at current board
+
 		isGameOver(chess2);
+
 		checkIsPromoted(presentChessBoard);// check if the chess is promoted
 
 		updateCapturedChessList();
+
+		System.out.println("AICapturedPieceList.size():"+ChessInfo.AICapturedPieceList.size());
+		if(ChessInfo.AICapturedPieceList.size()>0){
+			System.out.println(ChessInfo.AICapturedPieceList.get(0).getCoorX()+ChessInfo.AICapturedPieceList.get(0).getCoorY());
+		}
 
 	}
 
@@ -292,7 +306,6 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 
 
 	public void actionPerformed(ActionEvent e) {
-
 		updateCapturedChessList();
    //  System.out.println("3233333333333333333333333333333333333333");
 		ChessBoard clickBoard=(ChessBoard) e.getSource();//当前所点击的位置
@@ -352,7 +365,7 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 				}
 			} else {// get a new presentChessBoard from the main board area or the option chess area
 				if (clickBoard.getChess() != null && (!clickBoard.getChess().isEnemy())||clickBoard.getIsWaitingBorad()==2) {
-					presentChessBoard = clickBoard;// 当前操作位置更新
+					presentChessBoard = clickBoard;// update
 				}
 			}
 			updateCapturedChessList();
@@ -367,7 +380,7 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 		}
 
 		// for up player
-		if(!MainPlayFrame.player1InfoJpanel.getMyTurn()) {
+	/**	if(!MainPlayFrame.player1InfoJpanel.getMyTurn()) {
 			//System.out.println("544444444444444444444444444444444444");
 			if (presentChessBoard != null && presentChessBoard.getChess() != null) {//原来的棋盘点上不为空
 			//	System.out.println("566666666666666666666666666666");
@@ -425,7 +438,7 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 			return;
 		}
 
-
+*/
 
 		
 		//王被将军
@@ -459,7 +472,10 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 					  if ( k<ChessInfo.AICapturedPieceList.size()&& ChessInfo.AICapturedPieceList.get(k) != null ) {
 						chessboard[i][j].setChess(ChessInfo.AICapturedPieceList.get(k));
 						chessboard[i][j].setIcon(getChessImage(ChessInfo.AICapturedPieceList.get(k)));
-						k++;
+						//updateChess infor
+						ChessInfo.AICapturedPieceList.get(k).setCoorX(j);
+						ChessInfo.AICapturedPieceList.get(k).setCoorY(i);
+						  k++;
 					}
 				 }
 			 }
@@ -471,7 +487,10 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 					  if ( k<ChessInfo.PlayerCapturedPieceList.size()&& ChessInfo.PlayerCapturedPieceList.get(k) != null ) {
 						chessboard[i][j].setChess(ChessInfo.PlayerCapturedPieceList.get(k));
 						chessboard[i][j].setIcon(getChessImage(ChessInfo.PlayerCapturedPieceList.get(k)));
-						k++;
+						  //updateChess infor
+						  ChessInfo.PlayerCapturedPieceList.get(k).setCoorX(j);
+						  ChessInfo.PlayerCapturedPieceList.get(k).setCoorY(i);
+						  k++;
 				  }
 
 			}
