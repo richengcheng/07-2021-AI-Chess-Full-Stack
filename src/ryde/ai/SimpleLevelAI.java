@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MiddleLevelAI implements Runnable {
+public class SimpleLevelAI implements Runnable {
 	private List<List<Integer>> allAIChessWalkWayList = new ArrayList<List<Integer>>();
 	private List<Integer> allAICapturedChessWalkWayList = new ArrayList<Integer>();
 
@@ -86,9 +86,9 @@ public class MiddleLevelAI implements Runnable {
 					//piece min loose score
 
 					for (int k = 0; k < ChessInfo.playerChessList.size(); k++) {
-						if (!chess.getName().equals("king") && ChessInfo.playerChessList.get(k).isWalkable(ChessBoardPanel.
+						if (/**!chess.getName().equals("king") &&*/ ChessInfo.playerChessList.get(k).isWalkable(ChessBoardPanel.
 								chessboard[walkWayList.get(j) / 10][walkWayList.get(j) % 10], ChessBoardPanel.chessboard)) {
-							highScore -= chess.getValue();
+							highScore -= ChessInfo.AIChessList.get(i).getValue();
 						}
 					}
 
@@ -223,7 +223,7 @@ public class MiddleLevelAI implements Runnable {
 			}
 		}
 
-
+		System.out.println("bestValue1 is "+bestValue);
 
      // Find the best value with the largest move value in waiting board chess
 		for (int i = 0; i < ChessInfo.AICapturedPieceList.size(); i++) {
@@ -239,7 +239,7 @@ public class MiddleLevelAI implements Runnable {
 			}
 		}
 
-
+		System.out.println("bestValue2 is "+bestValue);
 
 		// Filter the same maximum number of moves.
 		// If the ones are threatened, choose the one with the greatest value.
@@ -301,11 +301,13 @@ public class MiddleLevelAI implements Runnable {
 		countValue();// second step
 		countCapturedPieceWalkWayValue();//third step
 		int index1 = findBestWay();
-		int index2 = allAIChessWalkWayList.get(index1 / 100).get(index1 % 100);
 		for (int x=0;x<ChessInfo.AIChessList.size();x++){
 			System.out.println(ChessInfo.AIChessList.get(x).getName());
 		}
-         System.out.println("allAIChessWalkWayList"+allAIChessWalkWayList);
+		System.out.println("allAIChessWalkWayList"+allAIChessWalkWayList);
+		System.out.println(findBestWay());
+
+
 		//if the best way piece is at waiting board
 		if(checkingIsCapturedList) {
 			System.out.println("878787878787878787878787887878787878787878787878787878787887878787878787878787878787878787887878787878787878787878787878787878787878");
@@ -318,6 +320,8 @@ public class MiddleLevelAI implements Runnable {
 							get(index1 / 100).getCoorY()][ChessInfo.AICapturedPieceList.get(index1 / 100).getCoorX()],
 					ChessBoardPanel.chessboard[index3 / 10][index3 % 10]);
 		}else {
+
+			int index2 = allAIChessWalkWayList.get(index1 / 100).get(index1 % 100);
 			ChessBoardPanel.moveChess(
 					ChessBoardPanel.chessboard[ChessInfo.AIChessList.get(index1 / 100).
 							getCoorY()][ChessInfo.AIChessList.get(index1 / 100).getCoorX()],

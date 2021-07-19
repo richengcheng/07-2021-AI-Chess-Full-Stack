@@ -59,7 +59,6 @@ public class Chess implements Serializable,Cloneable{
 					}
 					//input the walk way list
 					walkWayList.add(i*10+j);
-
 					//build a map reflection
 					walkWayMap.put(i*10+j, getCoorY()*10+getCoorX());
 
@@ -68,6 +67,29 @@ public class Chess implements Serializable,Cloneable{
 		}
 		return walkWayList;
 	}
+
+	//for minimax
+	public ArrayList<Integer> searchWalkableWay(ChessBoard[][] bs){
+		ArrayList<Integer> walkWayList=new ArrayList<Integer>();
+		for (int i = 0; i < 6; i++) {
+			for (int j = 3; j < 8; j++) {
+				if (isWalkable(bs[i][j], bs)) {
+					//the current board of chess is not null and also the chess will be marked as underattacked
+					if (bs[i][j].getChess()!=null&&bs[i][j].getChess().isEnemy()!=this.isEnemy()) {
+						bs[i][j].getChess().setUnderAttack(true);
+					}
+					//input the walk way list
+					walkWayList.add(i*10+j);
+					//build a map reflection
+
+				}
+			}
+		}
+		return walkWayList;
+	}
+
+
+
 
 
 	public boolean checkIsPromotedNow(){

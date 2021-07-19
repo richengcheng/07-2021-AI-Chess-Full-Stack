@@ -16,7 +16,7 @@ import javax.swing.JTextArea;
  */
 public class MenuFrame extends JFrame implements ActionListener {
 	JPanel contentPane,pane,helpPanel;
-	JButton playSingalButton,playDoubleButton,helpButton,exitButton;
+	JButton playSingalButton,playDoubleButton,helpButton,exitButton,playSingalButton2;
 	static MenuFrame  menuFrame;
 
 	static MainPlayFrame mainPlayFrame;
@@ -24,10 +24,12 @@ public class MenuFrame extends JFrame implements ActionListener {
 		contentPane = new JPanel();
 		contentPane.setLayout(null);
 		// adding button
-		playSingalButton=new JButton("fight for human");
+		playSingalButton=new JButton("Play with Simple AI");
+		playSingalButton2=new JButton("Play with Middle AI");
 		helpButton =new JButton("help");
 		exitButton=new JButton("exit");
 		addButton(playSingalButton,150, 150, 150, 30);
+		addButton(playSingalButton2,150, 200, 150, 30);
 	//	addButton(playDoubleButton,200, 200, 100, 30);
 		addButton(helpButton,150, 250, 150, 30);
 		addButton(exitButton,150, 300, 150, 30);
@@ -48,7 +50,7 @@ public class MenuFrame extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == playSingalButton) {
 			setVisible(false);
-			mainPlayFrame = new MainPlayFrame(false, true);
+			mainPlayFrame = new MainPlayFrame(false, true,0);
 			//ChessBoardPanel.coverPanel.setVisible(false);
 		} else if (e.getSource() == playDoubleButton) {
 
@@ -56,12 +58,15 @@ public class MenuFrame extends JFrame implements ActionListener {
 //			repaint();
 
 			this.setVisible(false);
-			
-		
+
 		}else if (e.getSource()==helpButton) {
 			JOptionPane.showMessageDialog(contentPane, "nothing could help");
 		}else if (e.getSource()==exitButton) {
 			System.exit(0);
+		}
+		else if(e.getSource() == playSingalButton2){
+			setVisible(false);
+			mainPlayFrame = new MainPlayFrame(false, true,1);
 		}
 	}
 	

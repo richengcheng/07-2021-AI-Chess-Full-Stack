@@ -7,7 +7,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import ryde.ai.MiddleLevelAI;
+import ryde.ai.SimpleLevelAI;
+import ryde.ai.MinimaxAI;
 
 public class MainPlayFrame extends JFrame implements ActionListener {
 
@@ -25,7 +26,7 @@ public class MainPlayFrame extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public MainPlayFrame(boolean isEnemy,boolean isSinglePlayer) {
+	public MainPlayFrame(boolean isEnemy,boolean isSinglePlayer,int AIlevel) {
 
 		super("shogi");
 		this.isEnemy=isEnemy;
@@ -62,9 +63,15 @@ public class MainPlayFrame extends JFrame implements ActionListener {
 		setLocationRelativeTo(null);
 		setVisible(true);
 
-		if (isSinglePlayer) {
-			MiddleLevelAI middleLevelAI=new MiddleLevelAI();
+		if (AIlevel==0) {
+			SimpleLevelAI middleLevelAI=new SimpleLevelAI();
 			Thread thread=new Thread(middleLevelAI);
+			thread.start();
+		}
+
+		if (AIlevel==1) {
+			MinimaxAI minimaxAI=new MinimaxAI();
+			Thread thread=new Thread(minimaxAI);
 			thread.start();
 		}
 

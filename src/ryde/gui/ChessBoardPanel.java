@@ -112,13 +112,6 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 		AIChickPromoted=new ImageIcon("images/chickPromotedUp.png");
 		AICatPromoted=new ImageIcon("images/catPromotedUp.png");
 
-		System.out.println("ChessBoardPanel the size of AIChessList !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		System.out.println(ChessInfo.AIChessList.size());
-
-		System.out.println("ChessBoardPanel the size of playerChessList !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		System.out.println(ChessInfo.playerChessList.size());
-
-
 
 		/////////////////////////////////////////////p2
 		Cat cat1=new Cat( 0,3,!isEnemy);
@@ -234,7 +227,6 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 				ChessInfo.AICapturedPieceList.add(chessExange);
 			}else {
 
-			//	ChessInfo.playerChessList.remove(chessExange2);
 				ChessInfo.AIChessList.remove(chessExange2);
 				ChessInfo.PlayerCapturedPieceList.add(chessExange);
 
@@ -313,7 +305,6 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 	//	System.out.println(((ChessBoard) e.getSource()).getCoorX());
 	//	System.out.println(((ChessBoard) e.getSource()).getCoorY());
 		//System.out.println(presentChessBoard.getChess().getName());
-
 
 		// checking if it is for down player
 		if(MainPlayFrame.player1InfoJpanel.getMyTurn()) {
