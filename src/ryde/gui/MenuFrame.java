@@ -19,7 +19,7 @@ public class MenuFrame extends JFrame implements ActionListener {
 	JButton playSingalButton,playDoubleButton,helpButton,exitButton,playSingalButton2;
 	static MenuFrame  menuFrame;
 
-	static MainPlayFrame mainPlayFrame;
+	static VariantsOptionFrame variantsOptionFrame;
 	public MenuFrame(){
 		contentPane = new JPanel();
 		contentPane.setLayout(null);
@@ -50,7 +50,7 @@ public class MenuFrame extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == playSingalButton) {
 			setVisible(false);
-			mainPlayFrame = new MainPlayFrame(false, true,0);
+			variantsOptionFrame = new VariantsOptionFrame(false, true,0);
 			//ChessBoardPanel.coverPanel.setVisible(false);
 		} else if (e.getSource() == playDoubleButton) {
 
@@ -66,7 +66,7 @@ public class MenuFrame extends JFrame implements ActionListener {
 		}
 		else if(e.getSource() == playSingalButton2){
 			setVisible(false);
-			mainPlayFrame = new MainPlayFrame(false, true,1);
+			variantsOptionFrame = new VariantsOptionFrame(false, true,1);
 		}
 	}
 	

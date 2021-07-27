@@ -129,9 +129,43 @@ public class MinimaxAI  implements Runnable  {
                 for (int i = 0; i < allCurrentChessWalkWayList.size(); i++) {
                     // for each  child of chess  position
 
-                    moveChessMinimax(currentChessBoard, allCurrentChessWalkWayList.get(i) % 10, allCurrentChessWalkWayList.get(i) / 10,AIPieceList.get(j),
-                            AICaputerdPieceList, PlayerCaputerdPieceList ,  AIPieceList, PlayerPieceList );
 
+                    // move chess
+                    {
+                        int Y = allCurrentChessWalkWayList.get(i) % 10;
+                        int X = allCurrentChessWalkWayList.get(i) / 10;
+
+                        // if current board contain a chess and this board is main working board
+                        if (currentChessBoard[Y][X].getChess() != null && AIPieceList.get(j).isEnemy() != currentChessBoard[Y][X].getChess().isEnemy()) {//
+
+                            Chess chessExange = currentChessBoard[Y][X].getChess();
+
+                            //change the chess enemy state
+                            chessExange.setEnemy(!chessExange.isEnemy());
+                            //	ChessInfo.AIChessList.remove(chessExange2);
+                            //set the chess to be no promoted because it is the chess dead
+                            chessExange.setIsPromoted(false);
+
+                            if ( AIPieceList.get(j).isEnemy()) {
+                                PlayerPieceList.remove(currentChessBoard[Y][X].getChess());
+                                AICaputerdPieceList.add(chessExange);
+                            } else {
+
+                                AIPieceList.remove(currentChessBoard[Y][X].getChess());
+                                PlayerCaputerdPieceList.add(chessExange);
+
+                            }
+                            System.out.println("chess moved by moveChess function ");
+
+                        }
+
+                        currentChessBoard[Y][X].setChess(null);
+                        currentChessBoard[Y][X].setChess(AIPieceList.get(j));
+
+                        //update
+                        AIPieceList.get(j).setCoor(currentChessBoard[Y][X]);
+
+                    }
                   //  chess.setCoorX(allCurrentChessWalkWayList.get(i) % 10);
                   //  chess.setCoorY(allCurrentChessWalkWayList.get(i) / 10);
 

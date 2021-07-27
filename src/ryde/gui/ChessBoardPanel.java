@@ -27,8 +27,8 @@ import ryde.battle.ChessInfo;
  */
 public class ChessBoardPanel extends JPanel implements ActionListener{
 	//Locale.setDefault(new Locale("en","US"));
-	private static ImageIcon myChickIcon,myCatIcon,myDogIcon,myLionIcon,myChickPromoted,myCatPromoted;
-	private static ImageIcon AIChickIcon,AICatIcon,AIDogIcon,AILionIcon,AIChickPromoted,AICatPromoted;
+	private static ImageIcon myChickIcon,myCatIcon,myDogIcon,myLionIcon,myChickPromoted,myCatPromoted,myElephant,myGiraffe;
+	private static ImageIcon AIChickIcon,AICatIcon,AIDogIcon,AILionIcon,AIChickPromoted,AICatPromoted,AIElephant,AIGiraffe;
 	private ChessBoard presentChessBoard=null;
 	private JLabel chessboardLabel;
 	//private ChessInfo chessInfo=null;
@@ -104,6 +104,8 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 		myLionIcon=new ImageIcon("images/lionDown.png");
 		myChickPromoted=new ImageIcon("images/chickPromotedDown.png");
 		myCatPromoted=new ImageIcon("images/catPromotedDown.png");
+		myElephant=new ImageIcon("images/elephantUp.png");
+		myGiraffe=new ImageIcon("images/giraffeUp.png");
 
 		 AIChickIcon=new ImageIcon("images/chickenUp.png");
 		 AICatIcon=new ImageIcon("images/catUp.png");
@@ -111,7 +113,8 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 		AILionIcon=new ImageIcon("images/lionUp.png");
 		AIChickPromoted=new ImageIcon("images/chickPromotedUp.png");
 		AICatPromoted=new ImageIcon("images/catPromotedUp.png");
-
+		AIElephant=new ImageIcon("images/elephantDown.png");
+		AIGiraffe=new ImageIcon("images/giraffeDown.png");
 
 		/////////////////////////////////////////////p2
 		Cat cat1=new Cat( 0,3,!isEnemy);
@@ -229,7 +232,6 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 
 				ChessInfo.AIChessList.remove(chessExange2);
 				ChessInfo.PlayerCapturedPieceList.add(chessExange);
-
 			}
 			System.out.println("chess moved by moveChess function ");
 
