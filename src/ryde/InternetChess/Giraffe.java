@@ -2,11 +2,11 @@ package ryde.InternetChess;
 
 import ryde.gui.ChessBoard;
 
-public class giraffe  extends Chess {
+public class Giraffe extends Chess {
 
     private int firstPlace;
 
-    public giraffe(int y,int x,boolean isEnemy){
+    public Giraffe(int y, int x, boolean isEnemy){
         super(y,x,"Giraffe",600,isEnemy);
         firstPlace=y;
     }

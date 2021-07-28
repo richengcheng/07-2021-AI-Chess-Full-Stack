@@ -9,7 +9,7 @@ public class VariantsOptionFrame extends JFrame implements ActionListener  {
     private boolean isEnemy;
     private boolean isSinglePlayer;
     private int AIlevel;
-    static MainPlayFrame mainPlayFrame;
+    MainPlayFrame mainPlayFrame;
     JButton fiveTimesSix,threeTimesFour,fiveTimesFive;
     JPanel contentPane;
 
@@ -46,22 +46,23 @@ public class VariantsOptionFrame extends JFrame implements ActionListener  {
         contentPane.add(b);
     }
 
+
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == fiveTimesSix) {
             this.setVisible(false);
-            mainPlayFrame = new MainPlayFrame(this.isEnemy, this.isSinglePlayer,this.AIlevel);
+            mainPlayFrame = new MainPlayFrame(this.isEnemy, this.isSinglePlayer,this.AIlevel,0);
             //ChessBoardPanel.coverPanel.setVisible(false);
         } else if (e.getSource() == threeTimesFour) {
 
-            mainPlayFrame = new MainPlayFrame(this.isEnemy, this.isSinglePlayer,this.AIlevel);
+            mainPlayFrame = new MainPlayFrame(this.isEnemy, this.isSinglePlayer,this.AIlevel,1);
 
             this.setVisible(false);
 
         }
         else if(e.getSource() == fiveTimesFive){
             this.setVisible(false);
-            mainPlayFrame = new MainPlayFrame(this.isEnemy,  this.isSinglePlayer,this.AIlevel);
+            mainPlayFrame = new MainPlayFrame(this.isEnemy,  this.isSinglePlayer,this.AIlevel,2);
         }
 
     }

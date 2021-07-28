@@ -15,26 +15,32 @@ public class MainPlayFrame extends JFrame implements ActionListener {
 	private static JPanel chessBoardPanel;
 	static JPanel contentPane;
 	//private MesAndOperaJpanel mesAndOperaPanel;
-	private JButton backButton;
+	private JButton backButton,reStartButton;
 	static PlayerInfoJpanel player1InfoJpanel,player2InfoJpanel;
 	static MainPlayFrame frame;
 	static boolean isSinglePlayer;
 //	public static boolean isGameOver=false;
 	
 	private static boolean isEnemy;
+	private int AIlevel,variantsNumber;
+
+	MainPlayFrame mainPlayFrame;
 
 	/**
 	 * Create the frame.
 	 */
-	public MainPlayFrame(boolean isEnemy,boolean isSinglePlayer,int AIlevel) {
+	public MainPlayFrame(boolean isEnemy,boolean isSinglePlayer,int AIlevel,int variantsNumber) {
 
 		super("shogi");
 		this.isEnemy=isEnemy;
+		this.isSinglePlayer=isSinglePlayer;
+		this.AIlevel=AIlevel;
+		this.variantsNumber=variantsNumber;
 		contentPane = new JPanel();
 		contentPane.setLayout(null);
 	
 		//chess board
-		chessBoardPanel=new ChessBoardPanel(isEnemy,isSinglePlayer);
+		chessBoardPanel=new ChessBoardPanel(isEnemy,isSinglePlayer,variantsNumber);
 		chessBoardPanel.setBounds(0, 50, 700, 500);
 		contentPane.add(chessBoardPanel);
 		//timing
@@ -52,9 +58,12 @@ public class MainPlayFrame extends JFrame implements ActionListener {
 
 		
 		backButton=new JButton("Exit");
+		reStartButton=new JButton("Restart Game");
 		backButton.setBounds(0, 555, 700, 30);
+		reStartButton.setBounds(0, 525, 700, 30);
 		backButton.addActionListener(this);
 		contentPane.add(backButton);
+		contentPane.add(reStartButton);
 		
 		setContentPane(contentPane);
 		setSize(700, 620);
@@ -75,7 +84,6 @@ public class MainPlayFrame extends JFrame implements ActionListener {
 			thread.start();
 		}
 
-
 	}
 	/**
 	 * game over and start new game
@@ -88,8 +96,11 @@ public class MainPlayFrame extends JFrame implements ActionListener {
 //	}
 	
 	public void actionPerformed(ActionEvent e) {
-		System.exit(0);
-		
+		if (e.getSource() == backButton) {
+			System.exit(0);
+		}else {
+			mainPlayFrame=new MainPlayFrame(this.isEnemy,  this.isSinglePlayer,this.AIlevel,this.variantsNumber);
+		}
 	}
 	
 }
