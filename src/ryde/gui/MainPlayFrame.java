@@ -41,7 +41,7 @@ public class MainPlayFrame extends JFrame implements ActionListener {
 	
 		//chess board
 		chessBoardPanel=new ChessBoardPanel(isEnemy,isSinglePlayer,variantsNumber);
-		chessBoardPanel.setBounds(0, 50, 700, 500);
+		chessBoardPanel.setBounds(0, 50, 900, 1000);
 		contentPane.add(chessBoardPanel);
 		//timing
 
@@ -57,16 +57,16 @@ public class MainPlayFrame extends JFrame implements ActionListener {
 		new Thread(player2InfoJpanel).start();
 
 		
-		backButton=new JButton("Exit");
+		backButton=new JButton("Restart Game");
 		reStartButton=new JButton("Restart Game");
-		backButton.setBounds(0, 555, 700, 30);
-		reStartButton.setBounds(0, 525, 700, 30);
+		backButton.setBounds(0, 640, 950, 30);
+		reStartButton.setBounds(0, 670, 950, 30);
 		backButton.addActionListener(this);
 		contentPane.add(backButton);
-		contentPane.add(reStartButton);
+		//contentPane.add(reStartButton);
 		
 		setContentPane(contentPane);
-		setSize(700, 620);
+		setSize(950, 700);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -96,10 +96,14 @@ public class MainPlayFrame extends JFrame implements ActionListener {
 //	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == backButton) {
-			System.exit(0);
-		}else {
+		if (e.getSource() ==reStartButton  ) {
+			this.setVisible(false);
+		//	System.exit(0);
+		}else if((e.getSource() == backButton)){
+
+			this.setVisible(false);
 			mainPlayFrame=new MainPlayFrame(this.isEnemy,  this.isSinglePlayer,this.AIlevel,this.variantsNumber);
+
 		}
 	}
 	

@@ -13,7 +13,7 @@ public class Giraffe extends Chess {
 
     @Override
     public boolean isWalkable(ChessBoard click, ChessBoard[][] bs) {
-        // 目标位置为空或者是敌人
+
         if (click.getChess() == null || click.getChess().isEnemy() != isEnemy()) {
             int betweenX, betweenY;
             betweenX = this.getCoorX() - click.getCoorX();
