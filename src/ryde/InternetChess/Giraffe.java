@@ -18,7 +18,7 @@ public class Giraffe extends Chess {
             int betweenX, betweenY;
             betweenX = this.getCoorX() - click.getCoorX();
             betweenY = this.getCoorY() - click.getCoorY();
-            if (betweenX == 0) {// ←→
+            if (betweenX == 0) { // ↑↓
                 for (int i = 1; i < Math.abs(getCoorY() - click.getCoorY());) {
                     if (getCoorY() > click.getCoorY())
                         i = -i;
@@ -27,7 +27,7 @@ public class Giraffe extends Chess {
                     i = Math.abs(i) + 1;
                 }
                 return true;
-            } else if (betweenY == 0) {// ↑↓
+            } else if (betweenY == 0) {// ←→
                 for (int i = 1; i < Math.abs(getCoorX() - click.getCoorX());) {
                     if (getCoorX() > click.getCoorX())
                         i = -i;

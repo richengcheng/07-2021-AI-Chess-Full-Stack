@@ -20,6 +20,8 @@ import ryde.InternetChess.Dog;
 import ryde.InternetChess.Chick;
 import ryde.InternetChess.Elephant;
 import ryde.InternetChess.Giraffe;
+import ryde.InternetChess.Boar;
+import ryde.InternetChess.Rabbit;
 import ryde.battle.ChessInfo;
 
 
@@ -29,8 +31,8 @@ import ryde.battle.ChessInfo;
  */
 public class ChessBoardPanel extends JPanel implements ActionListener{
 	//Locale.setDefault(new Locale("en","US"));
-	private static ImageIcon myChickIcon,myCatIcon,myDogIcon,myLionIcon,myChickPromoted,myCatPromoted,myElephant,myGiraffe;
-	private static ImageIcon AIChickIcon,AICatIcon,AIDogIcon,AILionIcon,AIChickPromoted,AICatPromoted,AIElephant,AIGiraffe;
+	private static ImageIcon myChickIcon,myCatIcon,myDogIcon,myLionIcon,myChickPromoted,myCatPromoted,myElephant,myGiraffe,myBoar,myRabbit;
+	private static ImageIcon AIChickIcon,AICatIcon,AIDogIcon,AILionIcon,AIChickPromoted,AICatPromoted,AIElephant,AIGiraffe,AIBoar,AIRabbit;
 	private ChessBoard presentChessBoard=null;
 	private JLabel chessboardLabel;
 	//private ChessInfo chessInfo=null;
@@ -40,13 +42,16 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 	public static boolean isSinglePlayer,isPlayerTurn;
 	public static  ChessBoard [][]  chessboard;
 	private static int variantsNumber;
+	private  List<Chess> ChessList = new ArrayList<Chess>();
+	private boolean isEnemy;
+
 	//public static List<Chess> UpPlayerCapturedChessList=new ArrayList<Chess>();
 	//public static List<Chess> DownPlayerCapturedChessList=new ArrayList<Chess>();
 
 
 	public ChessBoardPanel(boolean isEnemy,boolean isSinglePlayer,int variantsNumber){
 
-
+		this.isEnemy=isEnemy;
 		//at beginning the IsEnemy is false
 		this.isSinglePlayer=isSinglePlayer;
 		//so at beginning the isplayerTurn is ture,
@@ -94,7 +99,7 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 			presentChessBoard = chessboard[0][0];
 			initAllChesses(isEnemy,variantsNumber);
 			chessboardLabel = new JLabel(new ImageIcon("images/shogiBoard1.png"));
-			chessboardLabel.setBounds(10, -172, 900, 700);
+			chessboardLabel.setBounds(-90, -125, 900, 700);
 			add(chessboardLabel);
 		}
 
@@ -198,25 +203,27 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 	public void initAllChesses(boolean isEnemy,int variantsNumber){
 
 
-		 myChickIcon=new ImageIcon("images/chickenDown.png");
+		myChickIcon=new ImageIcon("images/chickenDown.png");
 		myCatIcon=new ImageIcon("images/catDown.png");
 		myDogIcon=new ImageIcon("images/dogDown.png");
 		myLionIcon=new ImageIcon("images/lionDown.png");
 		myChickPromoted=new ImageIcon("images/chickPromotedDown.png");
 		myCatPromoted=new ImageIcon("images/catPromotedDown.png");
-		myElephant=new ImageIcon("images/elephantUp.png");
-		myGiraffe=new ImageIcon("images/giraffeUp.png");
+		myElephant=new ImageIcon("images/elephantDown.png");
+		myGiraffe=new ImageIcon("images/giraffeDown.png");
+		myBoar=new ImageIcon("images/boarDown.png");
+		myRabbit=new ImageIcon("images/rabbitDown.png");
 
-
-		 AIChickIcon=new ImageIcon("images/chickenUp.png");
-		 AICatIcon=new ImageIcon("images/catUp.png");
+		AIChickIcon=new ImageIcon("images/chickenUp.png");
+		AICatIcon=new ImageIcon("images/catUp.png");
 		AIDogIcon=new ImageIcon("images/dogUp.png");
 		AILionIcon=new ImageIcon("images/lionUp.png");
 		AIChickPromoted=new ImageIcon("images/chickPromotedUp.png");
 		AICatPromoted=new ImageIcon("images/catPromotedUp.png");
-		AIElephant=new ImageIcon("images/elephantDown.png");
-		AIGiraffe=new ImageIcon("images/giraffeDown.png");
-
+		AIElephant=new ImageIcon("images/elephantUp.png");
+		AIGiraffe=new ImageIcon("images/giraffeUp.png");
+		AIBoar=new ImageIcon("images/boarUp.png");
+		AIRabbit=new ImageIcon("images/rabbitUp.png");
 
 
 		int chessTypeChecking=0;
@@ -230,7 +237,7 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 			ChessInfo.AIChessListAdd(lion);
 
 			/////////////////////////////////////////////AI
-			for(int i=0;i<20;i++){
+			for(int i=0;i<8;i++){
 			 double b;
 			 b= Math.random()*10;
 			 b=b/2;
@@ -248,15 +255,10 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 			chessboard[5][5].setChess(lion2);
 			ChessInfo.playerChessList.add(lion2);
 
-			for(int i=0;i<20;i++){
-				double b;
-				b= Math.random()*10;
-				b=b/2;
-				int numberOfCurrentTypeOfPiece = (int)b;
-				countNumberOfPiece = setPlayerChess(isEnemy, chessTypeChecking, numberOfCurrentTypeOfPiece,
-						countNumberOfPiece,variantsNumber);
-				chessTypeChecking++;
-			}
+
+			setPlayerChess(variantsNumber);
+
+
 
 			if (isEnemy) {
 				myKing = lion2;
@@ -278,10 +280,10 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 			ChessInfo.AIChessListAdd(lion);
 
 			/////////////////////////////////////////////AI
-			for(int i=0;i<21;i++){
+			for(int i=0;i<10;i++){
 				double b;
 				b= Math.random()*10;
-				b=b;
+				b=b/2;
 				int numberOfCurrentTypeOfPiece = (int)b;
 				countNumberOfPiece = setAIChess(isEnemy, chessTypeChecking, numberOfCurrentTypeOfPiece,
 						countNumberOfPiece,variantsNumber);
@@ -296,14 +298,9 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 			chessboard[8][7].setChess(lion2);
 			ChessInfo.playerChessList.add(lion2);
 
-			for(int i=0;i<21;i++){
-				double b;
-				b= Math.random()*10;
-				int numberOfCurrentTypeOfPiece = (int)b;
-				countNumberOfPiece = setPlayerChess(isEnemy, chessTypeChecking, numberOfCurrentTypeOfPiece,
-						countNumberOfPiece,variantsNumber);
-				chessTypeChecking++;
-			}
+
+		setPlayerChess(variantsNumber);
+
 
 			if (isEnemy) {
 				myKing = lion2;
@@ -325,10 +322,10 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 			ChessInfo.AIChessListAdd(lion);
 
 			/////////////////////////////////////////////AI
-			for(int i=0;i<21;i++){
+			for(int i=0;i<13;i++){
 				double b;
 				b= Math.random()*10;
-				b=b;
+				b=b/2;
 				int numberOfCurrentTypeOfPiece = (int)b;
 				countNumberOfPiece = setAIChess(isEnemy, chessTypeChecking, numberOfCurrentTypeOfPiece,
 						countNumberOfPiece,variantsNumber);
@@ -343,14 +340,9 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 			chessboard[7][6].setChess(lion2);
 			ChessInfo.playerChessList.add(lion2);
 
-			for(int i=0;i<21;i++){
-				double b;
-				b= Math.random()*10;
-				int numberOfCurrentTypeOfPiece = (int)b;
-				countNumberOfPiece = setPlayerChess(isEnemy, chessTypeChecking, numberOfCurrentTypeOfPiece,
-						countNumberOfPiece,variantsNumber);
-				chessTypeChecking++;
-			}
+
+			 setPlayerChess(variantsNumber);
+
 
 			if (isEnemy) {
 				myKing = lion2;
@@ -368,6 +360,7 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
  	}
 
 
+
 	public int  setAIChess (boolean isEnemy,int chessTypeChecking,int numberOfCurrentTypeOfPiece,
 							int countNumberOfPiece,int variantsNumber){
 
@@ -375,579 +368,507 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 
 
 
-		if(chessTypeChecking==0) {
 
+		if(variantsNumber==0) {
 
+				for (int i = 0; i < numberOfCurrentTypeOfPiece; i++) {
 
-             for(int i=0;i<numberOfCurrentTypeOfPiece;i++) {
-
-
-				 if(variantsNumber==0) {
-					 Y = countNumberOfPiece / 5;
-					 X = countNumberOfPiece % 5 + 3;
-
-					 if(countNumberOfPiece==2){
-						 countNumberOfPiece++;//because lion is already set
-						 break;
-					 }
-
-				 }
-
-
-				 if(variantsNumber==1) {
-					 Y = countNumberOfPiece / 9;
-					 X = countNumberOfPiece % 9 + 3;
-
-					 if(countNumberOfPiece==4){
-						 countNumberOfPiece++;//because lion is already set
-						 break;
-					 }
-
-				 }
-
-
-
-
-				 if(variantsNumber==2) {
-					 Y = countNumberOfPiece / 7;
-					 X = countNumberOfPiece % 7 + 3;
-
-					 if(countNumberOfPiece==3){
-						 countNumberOfPiece++;//because lion is already set
-						 break;
-					 }
-
-				 }
-
-				      Cat cat1 = new Cat(Y, X, !isEnemy);
-					 ChessInfo.AIChessListAdd(cat1);
-					 chessboard[Y][X].setIcon(AICatIcon);
-					 chessboard[Y][X].setChess(cat1);
-					 countNumberOfPiece++;
-
-			 }
-		}
-
-
-
-		if(chessTypeChecking==1) {
-
-
-
-
-			for(int i=0;i<numberOfCurrentTypeOfPiece;i++) {
-
-				if(variantsNumber==0) {
-					Y = countNumberOfPiece / 5;
-					X = countNumberOfPiece % 5 + 3;
-
-					if(countNumberOfPiece==2){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-				if(variantsNumber==1) {
-					Y = countNumberOfPiece / 9;
-					X = countNumberOfPiece % 9 + 3;
-
-					if(countNumberOfPiece==4){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-				if(variantsNumber==2) {
-					Y = countNumberOfPiece / 7;
-					X = countNumberOfPiece % 7 + 3;
-
-					if(countNumberOfPiece==3){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-				Dog dog =new Dog(Y, X, !isEnemy);
-				ChessInfo.AIChessListAdd(dog);
-				chessboard[Y][X].setIcon(AIDogIcon);
-				chessboard[Y][X].setChess(dog);
-				countNumberOfPiece++;
-			}
-		}
-
-		if(chessTypeChecking==2) {
-
-
-
-
-			for(int i=0;i<numberOfCurrentTypeOfPiece;i++) {
-
-
-				if(variantsNumber==0) {
-					Y = countNumberOfPiece / 5;
-					X = countNumberOfPiece % 5 + 3;
-
-					if(countNumberOfPiece==2){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-				if(variantsNumber==1) {
-					Y = countNumberOfPiece / 9;
-					X = countNumberOfPiece % 9 + 3;
-
-					if(countNumberOfPiece==4){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-				if(variantsNumber==2) {
-					Y = countNumberOfPiece / 7;
-					X = countNumberOfPiece % 7 + 3;
-
-					if(countNumberOfPiece==3){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-				Elephant elephant =new Elephant(Y, X, !isEnemy);
-				ChessInfo.AIChessListAdd(elephant);
-				chessboard[Y][X].setIcon(AIElephant);
-				chessboard[Y][X].setChess(elephant);
-				countNumberOfPiece++;
-			}
-		}
-
-
-		if(chessTypeChecking==3) {
-
-
-
-			for(int i=0;i<numberOfCurrentTypeOfPiece;i++) {
-
-
-				if(variantsNumber==0) {
-					Y = countNumberOfPiece / 5;
-					X = countNumberOfPiece % 5 + 3;
-
-					if(countNumberOfPiece==2){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-				if(variantsNumber==1) {
-					Y = countNumberOfPiece / 9;
-					X = countNumberOfPiece % 9 + 3;
-
-					if(countNumberOfPiece==4){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-				if(variantsNumber==2) {
-					Y = countNumberOfPiece / 7;
-					X = countNumberOfPiece % 7 + 3;
-
-					if(countNumberOfPiece==3){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-				Giraffe giraffe =new Giraffe(Y, X, !isEnemy);
-				ChessInfo.AIChessListAdd(giraffe);
-				chessboard[Y][X].setIcon(AIGiraffe);
-				chessboard[Y][X].setChess(giraffe);
-				countNumberOfPiece++;
-			}
-		}
-
-		if(chessTypeChecking==4) {
-
-
-
-			for(int i=0;i<numberOfCurrentTypeOfPiece;i++) {
-
-
-				if(variantsNumber==0) {
-					Y = countNumberOfPiece / 5;
-					X = countNumberOfPiece % 5 + 3;
-
-					if(countNumberOfPiece==2){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-				if(variantsNumber==1) {
-					Y = countNumberOfPiece / 9;
-					X = countNumberOfPiece % 9 + 3;
-
-					if(countNumberOfPiece==4){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-				if(variantsNumber==2) {
-					Y = countNumberOfPiece / 7;
-					X = countNumberOfPiece % 7 + 3;
-
-					if(countNumberOfPiece==3){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-				Chick chick3 =new Chick(Y, X, !isEnemy);
-				ChessInfo.AIChessListAdd(chick3);
-				chessboard[Y][X].setIcon(AIChickIcon);
-				chessboard[Y][X].setChess(chick3);
-				countNumberOfPiece++;
-			}
-		}
-
-		if(chessTypeChecking>4&&countNumberOfPiece<11){
-
-
-
-			if(variantsNumber==0) {
-				Y = countNumberOfPiece / 5;
-				X = countNumberOfPiece % 5 + 3;
-
-				if(countNumberOfPiece==2){
-					countNumberOfPiece++;//because lion is already set
-				}
-
-			}
-
-			if(variantsNumber==1) {
-				Y = countNumberOfPiece / 9;
-				X = countNumberOfPiece % 9 + 3;
-
-				if(countNumberOfPiece==4){
-					countNumberOfPiece++;//because lion is already set
-				}
-			}
-
-			if(variantsNumber==2) {
-				Y = countNumberOfPiece / 7;
-				X = countNumberOfPiece % 7 + 3;
-
-				if(countNumberOfPiece==3){
-					countNumberOfPiece++;//because lion is already set
-				}
-
-			}
-
-			Chick chick3 =new Chick(Y, X, !isEnemy);
-			ChessInfo.AIChessListAdd(chick3);
-			chessboard[Y][X].setIcon(AIChickIcon);
-			chessboard[Y][X].setChess(chick3);
-			countNumberOfPiece++;
-
-		}
-
-		return countNumberOfPiece;
-	}
-
-
-	public int setPlayerChess(boolean isEnemy,int chessTypeChecking,int numberOfCurrentTypeOfPiece,
-							  int countNumberOfPiece,int variantsNumber){
-
-		int X=0,Y=0;
-		if(chessTypeChecking==0) {
-			for(int i=0;i<numberOfCurrentTypeOfPiece;i++) {
-
-				if(variantsNumber==0) {
-					Y = 5-countNumberOfPiece / 5 ;
-					X = countNumberOfPiece % 5+3;
-
-					if(countNumberOfPiece==2){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-				}
-
-				if(variantsNumber==1) {
-					Y = 8 - countNumberOfPiece/9;
-					X = countNumberOfPiece % 9 + 3;
-
-					if(countNumberOfPiece==4){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-				if(variantsNumber==2) {
-					Y = 7-countNumberOfPiece / 7;
-					X= countNumberOfPiece % 7 + 3;
-
-					if(countNumberOfPiece==3){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-
-				Cat cat1 =new Cat(Y, X, isEnemy);
-				ChessInfo.playerChessList.add(cat1);
-				chessboard[Y][X].setIcon(myCatIcon);
-				chessboard[Y][X].setChess(cat1);
-				countNumberOfPiece++;
-			}
-		}
-
-		if(chessTypeChecking==1) {
-
-
-			for(int i=0;i<numberOfCurrentTypeOfPiece;i++) {
-
-				if(variantsNumber==0) {
-					Y = 5-countNumberOfPiece / 5 ;
-					X = countNumberOfPiece % 5+3;
-
-					if(countNumberOfPiece==2){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-				if(variantsNumber==1) {
-					Y = 8 - countNumberOfPiece/9;
-					X = countNumberOfPiece % 9 + 3;
-
-					if(countNumberOfPiece==4){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-				if(variantsNumber==2) {
-					Y = 7-countNumberOfPiece / 7;
-					X= countNumberOfPiece % 7 + 3;
-
-					if(countNumberOfPiece==3){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-
-
-				Dog dog =new Dog(Y, X, isEnemy);
-				ChessInfo.playerChessList.add(dog);
-				chessboard[Y][X].setIcon(myDogIcon);
-				chessboard[Y][X].setChess(dog);
-				countNumberOfPiece++;
-			}
-		}
-
-		if(chessTypeChecking==2) {
-
-
-
-			for(int i=0;i<numberOfCurrentTypeOfPiece;i++) {
-				if(variantsNumber==0) {
-					Y = 5-countNumberOfPiece / 5 ;
-					X = countNumberOfPiece % 5+3;
-
-					if(countNumberOfPiece==2){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-
-				if(variantsNumber==1) {
-					Y = 8 - countNumberOfPiece/9;
-					X = countNumberOfPiece % 9 + 3;
-
-					if(countNumberOfPiece==4){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-				if(variantsNumber==2) {
-					Y = 7-countNumberOfPiece / 7;
-					X= countNumberOfPiece % 7 + 3;
-
-					if(countNumberOfPiece==3){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-
-
-				Elephant elephant =new Elephant(Y, X, isEnemy);
-				ChessInfo.playerChessList.add(elephant);
-				chessboard[Y][X].setIcon(myElephant);
-				chessboard[Y][X].setChess(elephant);
-				countNumberOfPiece++;
-			}
-		}
-
-
-		if(chessTypeChecking==3) {
-			for (int i = 0; i < numberOfCurrentTypeOfPiece; i++) {
-
-				if (variantsNumber == 0) {
-					Y = 5 - countNumberOfPiece / 5;
-					X = countNumberOfPiece % 5 + 3;
+					Y = countNumberOfPiece / 3;
+					X = countNumberOfPiece % 3 + 3;
 
 					if (countNumberOfPiece == 2) {
 						countNumberOfPiece++;//because lion is already set
 						break;
 					}
-				}
 
-				if (variantsNumber == 1) {
-					Y = 8 - countNumberOfPiece / 9;
-					X = countNumberOfPiece % 9 + 3;
+					if(chessTypeChecking==0) {
 
-					if (countNumberOfPiece == 4) {
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
+						Cat cat1 = new Cat(Y, X, !isEnemy);
+						ChessInfo.AIChessListAdd(cat1);
+						chessboard[Y][X].setIcon(AICatIcon);
+						chessboard[Y][X].setChess(cat1);
+						ChessList.add(cat1);
+						System.out.println("cat11!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+chessboard[Y][X].getChess().isEnemy());
+						countNumberOfPiece++;
 
-					if (variantsNumber == 2) {
-						Y = 7 - countNumberOfPiece / 7;
-						X = countNumberOfPiece % 7 + 3;
+						if(X!=5){
+							int BetweenX = Math.abs(5 - X);
+							int newX=5+BetweenX;
 
-						if (countNumberOfPiece == 3) {
-							countNumberOfPiece++;//because lion is already set
-							break;
+							Cat cat2 = new Cat(Y, newX, !isEnemy);
+							ChessInfo.AIChessListAdd(cat2);
+							ChessList.add(cat2);
+							chessboard[Y][newX].setIcon(AICatIcon);
+							chessboard[Y][newX].setChess(cat2);
+
+							System.out.println("cat2 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+chessboard[Y][newX].getChess().isEnemy());
 						}
+
+					}
+
+					if(chessTypeChecking==1) {
+						Dog dog =new Dog(Y, X, !isEnemy);
+						ChessInfo.AIChessListAdd(dog);
+						ChessList.add(dog);
+						chessboard[Y][X].setIcon(AIDogIcon);
+						chessboard[Y][X].setChess(dog);
+						countNumberOfPiece++;
+
+						if(X!=5){
+							int BetweenX = Math.abs(5 - X);
+							int newX=5+BetweenX;
+
+							Dog dog2 =new Dog(Y, newX, !isEnemy);
+							ChessInfo.AIChessListAdd(dog2);
+							ChessList.add(dog2);
+							chessboard[Y][newX].setIcon(AIDogIcon);
+							chessboard[Y][newX].setChess(dog2);
+						}
+
+
+					}
+
+					if(chessTypeChecking>1&&countNumberOfPiece<7) {
+						Chick chick3 = new Chick(Y, X, !isEnemy);
+						ChessInfo.AIChessListAdd(chick3);
+						ChessList.add(chick3);
+						chessboard[Y][X].setIcon(AIChickIcon);
+						chessboard[Y][X].setChess(chick3);
+						countNumberOfPiece++;
+
+						if(X!=5){
+							int BetweenX = Math.abs(5 - X);
+							int newX=5+BetweenX;
+
+							Chick chick4 = new Chick(Y, newX, !isEnemy);
+							ChessInfo.AIChessListAdd(chick4);
+							ChessList.add(chick4);
+							chessboard[Y][newX].setIcon(AIChickIcon);
+							chessboard[Y][newX].setChess(chick4);
+						}
+
 					}
 
 
-					Giraffe giraffe = new Giraffe(Y, X, isEnemy);
-					ChessInfo.playerChessList.add(giraffe);
-					chessboard[Y][X].setIcon(myGiraffe);
-					chessboard[Y][X].setChess(giraffe);
-					countNumberOfPiece++;
-				}
 			}
+
+
 		}
 
-		if(chessTypeChecking==4) {
-
-			for(int i=0;i<numberOfCurrentTypeOfPiece;i++) {
-
-				if(variantsNumber==0) {
-					Y = 5-countNumberOfPiece / 5 ;
-					X = countNumberOfPiece % 5+3;
-
-					if(countNumberOfPiece==2){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-				if(variantsNumber==1) {
-					Y = 8 - countNumberOfPiece/9;
-					X = countNumberOfPiece % 9 + 3;
-
-					if(countNumberOfPiece==4){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
-
-				if(variantsNumber==2) {
-					Y = 7-countNumberOfPiece / 7;
-					X= countNumberOfPiece % 7 + 3;
-
-					if(countNumberOfPiece==3){
-						countNumberOfPiece++;//because lion is already set
-						break;
-					}
-
-				}
 
 
+		if(variantsNumber==1) {
 
-				Chick chick3 =new Chick(Y, X, isEnemy);
-				ChessInfo.playerChessList.add(chick3);
-				chessboard[Y][X].setIcon(myChickIcon);
-				chessboard[Y][X].setChess(chick3);
-				countNumberOfPiece++;
-			}
-		}
+			for (int i = 0; i < numberOfCurrentTypeOfPiece; i++) {
 
-		if(chessTypeChecking>4&&countNumberOfPiece<11){
-
-			if(variantsNumber==0) {
-				Y = 5-countNumberOfPiece / 5 ;
-				X = countNumberOfPiece % 5+3;
-
-				if(countNumberOfPiece==2){
-					countNumberOfPiece++;//because lion is already set
-				}
-
-			}
-
-
-			if(variantsNumber==1) {
-				Y = 8 - countNumberOfPiece/9;
-				X = countNumberOfPiece % 9 + 3;
+				Y = countNumberOfPiece / 5;
+				X = countNumberOfPiece % 5 + 3;
 
 				if(countNumberOfPiece==4){
 					countNumberOfPiece++;//because lion is already set
+					break;
+				}
+
+				if(chessTypeChecking==0) {
+
+					Cat cat1 = new Cat(Y, X, !isEnemy);
+					ChessInfo.AIChessListAdd(cat1);
+					chessboard[Y][X].setIcon(AICatIcon);
+					chessboard[Y][X].setChess(cat1);
+					countNumberOfPiece++;
+
+					if(X!=7){
+						int BetweenX = Math.abs(7 - X);
+						int newX=7+BetweenX;
+
+						Cat cat2 = new Cat(Y, newX, !isEnemy);
+						ChessInfo.AIChessListAdd(cat2);
+						chessboard[Y][newX].setIcon(AICatIcon);
+						chessboard[Y][newX].setChess(cat2);
+					}
 
 				}
 
-			}
+				if(chessTypeChecking==1) {
+					Dog dog =new Dog(Y, X, !isEnemy);
+					ChessInfo.AIChessListAdd(dog);
+					chessboard[Y][X].setIcon(AIDogIcon);
+					chessboard[Y][X].setChess(dog);
+					countNumberOfPiece++;
 
-			if(variantsNumber==2) {
-				Y = 7-countNumberOfPiece / 7;
-				X= countNumberOfPiece % 7 + 3;
+					if(X!=7){
+						int BetweenX = Math.abs(7 - X);
+						int newX=7+BetweenX;
 
-				if(countNumberOfPiece==3){
-					countNumberOfPiece++;//because lion is already set
+						Dog dog2 =new Dog(Y, newX, !isEnemy);
+						ChessInfo.AIChessListAdd(dog2);
+						chessboard[Y][newX].setIcon(AIDogIcon);
+						chessboard[Y][newX].setChess(dog2);
+					}
+
 				}
 
+				if(chessTypeChecking==2) {
+					Elephant elephant = new Elephant(Y, X, !isEnemy);
+					ChessInfo.AIChessListAdd(elephant);
+					chessboard[Y][X].setIcon(AIElephant);
+					chessboard[Y][X].setChess(elephant);
+					countNumberOfPiece++;
+
+					if(X!=7){
+						int BetweenX = Math.abs(7 - X);
+						int newX=7+BetweenX;
+
+						Elephant elephant2 = new Elephant(Y, newX, !isEnemy);
+						ChessInfo.AIChessListAdd(elephant2);
+						chessboard[Y][newX].setIcon(AIElephant);
+						chessboard[Y][newX].setChess(elephant2);
+					}
+
+				}
+
+				if(chessTypeChecking==3) {
+					Giraffe giraffe = new Giraffe(Y, X, !isEnemy);
+					ChessInfo.AIChessListAdd(giraffe);
+					chessboard[Y][X].setIcon(AIGiraffe);
+					chessboard[Y][X].setChess(giraffe);
+					countNumberOfPiece++;
+
+					if(X!=7){
+						int BetweenX = Math.abs(7 - X);
+						int newX=7+BetweenX;
+
+						Giraffe giraffe2 = new Giraffe(Y, newX, !isEnemy);
+						ChessInfo.AIChessListAdd(giraffe2);
+						chessboard[Y][newX].setIcon(AIGiraffe);
+						chessboard[Y][newX].setChess(giraffe2);
+					}
+
+				}
+
+				if(chessTypeChecking==4) {
+					Boar boar =new Boar(Y, X, !isEnemy);
+					ChessInfo.AIChessListAdd(boar);
+					chessboard[Y][X].setIcon(AIBoar);
+					chessboard[Y][X].setChess(boar);
+					countNumberOfPiece++;
+
+					if(X!=7){
+						int BetweenX = Math.abs(7 - X);
+						int newX=7+BetweenX;
+
+						Boar boar2 =new Boar(Y, newX, !isEnemy);
+						ChessInfo.AIChessListAdd(boar2);
+						chessboard[Y][newX].setIcon(AIBoar);
+						chessboard[Y][newX].setChess(boar2);
+					}
+
+				}
+
+
+
+				if(chessTypeChecking==5) {
+
+					Rabbit rabbit =new Rabbit(Y, X, !isEnemy);
+					ChessInfo.AIChessListAdd(rabbit);
+					chessboard[Y][X].setIcon(AIRabbit);
+					chessboard[Y][X].setChess(rabbit);
+					countNumberOfPiece++;
+
+					if(X!=7){
+						int BetweenX = Math.abs(7 - X);
+						int newX=7+BetweenX;
+
+						Rabbit rabbit2 =new Rabbit(Y, newX, !isEnemy);
+						ChessInfo.AIChessListAdd(rabbit2);
+						chessboard[Y][newX].setIcon(AIRabbit);
+						chessboard[Y][newX].setChess(rabbit2);
+					}
+
+
+				}
+
+				if(chessTypeChecking>5&&countNumberOfPiece<10) {
+					Chick chick3 = new Chick(Y, X, !isEnemy);
+					ChessInfo.AIChessListAdd(chick3);
+					chessboard[Y][X].setIcon(AIChickIcon);
+					chessboard[Y][X].setChess(chick3);
+					countNumberOfPiece++;
+
+					if(X!=7){
+						int BetweenX = Math.abs(7 - X);
+						int newX=7+BetweenX;
+
+						Chick chick4 = new Chick(Y, newX, !isEnemy);
+						ChessInfo.AIChessListAdd(chick4);
+						chessboard[Y][newX].setIcon(AIChickIcon);
+						chessboard[Y][newX].setChess(chick4);
+
+					}
+
+
+				}
+
+
 			}
 
-
-
-			Chick chick3 =new Chick(Y, X, isEnemy);
-			ChessInfo.playerChessList.add(chick3);
-			chessboard[Y][X].setIcon(myChickIcon);
-			chessboard[Y][X].setChess(chick3);
-			countNumberOfPiece++;
 
 		}
 
+
+
+
+		if(variantsNumber==2) {
+
+			for (int i = 0; i < numberOfCurrentTypeOfPiece; i++) {
+
+				Y = countNumberOfPiece / 4;
+				X = countNumberOfPiece % 4 + 3;
+
+				if(countNumberOfPiece==3){
+					countNumberOfPiece++;//because lion is already set
+					break;
+				}
+
+				if(chessTypeChecking==0) {
+
+					Cat cat1 = new Cat(Y, X, !isEnemy);
+					ChessInfo.AIChessListAdd(cat1);
+					chessboard[Y][X].setIcon(AICatIcon);
+					chessboard[Y][X].setChess(cat1);
+					countNumberOfPiece++;
+
+					if(X!=6){
+						int BetweenX = Math.abs(6 - X);
+						int newX=6+BetweenX;
+
+						Cat cat2 = new Cat(Y, newX, !isEnemy);
+						ChessInfo.AIChessListAdd(cat2);
+						chessboard[Y][newX].setIcon(AICatIcon);
+						chessboard[Y][newX].setChess(cat2);
+					}
+
+
+				}
+
+				if(chessTypeChecking==1) {
+					Dog dog =new Dog(Y, X, !isEnemy);
+					ChessInfo.AIChessListAdd(dog);
+					chessboard[Y][X].setIcon(AIDogIcon);
+					chessboard[Y][X].setChess(dog);
+					countNumberOfPiece++;
+
+					if(X!=6){
+						int BetweenX = Math.abs(6 - X);
+						int newX=6+BetweenX;
+
+						Dog dog2 =new Dog(Y, newX, !isEnemy);
+						ChessInfo.AIChessListAdd(dog2);
+						chessboard[Y][newX].setIcon(AIDogIcon);
+						chessboard[Y][newX].setChess(dog2);
+					}
+
+				}
+
+
+				if(chessTypeChecking==2) {
+					Boar boar =new Boar(Y, X, !isEnemy);
+					ChessInfo.AIChessListAdd(boar);
+					chessboard[Y][X].setIcon(AIBoar);
+					chessboard[Y][X].setChess(boar);
+					countNumberOfPiece++;
+
+					if(X!=6){
+						int BetweenX = Math.abs(6 - X);
+						int newX=6+BetweenX;
+
+						Boar boar2 =new Boar(Y, newX, !isEnemy);
+						ChessInfo.AIChessListAdd(boar2);
+						chessboard[Y][newX].setIcon(AIBoar);
+						chessboard[Y][newX].setChess(boar2);
+					}
+
+				}
+
+
+
+				if(chessTypeChecking==3) {
+
+					Rabbit rabbit =new Rabbit(Y, X, !isEnemy);
+					ChessInfo.AIChessListAdd(rabbit);
+					chessboard[Y][X].setIcon(AIRabbit);
+					chessboard[Y][X].setChess(rabbit);
+					countNumberOfPiece++;
+
+					if(X!=6){
+						int BetweenX = Math.abs(6 - X);
+						int newX=6+BetweenX;
+
+						Rabbit rabbit2 =new Rabbit(Y, newX, !isEnemy);
+						ChessInfo.AIChessListAdd(rabbit2);
+						chessboard[Y][newX].setIcon(AIRabbit);
+						chessboard[Y][newX].setChess(rabbit2);
+					}
+
+				}
+
+				if(chessTypeChecking>3&&countNumberOfPiece<8) {
+					Chick chick3 = new Chick(Y, X, !isEnemy);
+					ChessInfo.AIChessListAdd(chick3);
+					chessboard[Y][X].setIcon(AIChickIcon);
+					chessboard[Y][X].setChess(chick3);
+					countNumberOfPiece++;
+
+					if(X!=6){
+						int BetweenX = Math.abs(6 - X);
+						int newX=6+BetweenX;
+
+						Chick chick4 = new Chick(Y, newX, !isEnemy);
+						ChessInfo.AIChessListAdd(chick4);
+						chessboard[Y][newX].setIcon(AIChickIcon);
+						chessboard[Y][newX].setChess(chick4);
+					}
+
+				}
+
+
+			}
+
+
+		}
+
+
+
 		return countNumberOfPiece;
+	}
+
+
+	public void setPlayerChess(int variantsNumber ){
+
+		int X=0,Y=0;
+/*
+		for (int i = 0; i < 6; i++) {
+			for (int j = 3; j < 8; j++) {
+				if(chessboard[i][j].getChess()!=null)
+					System.out.println(		chessboard[i][j].getChess().isEnemy());
+			}
+		}
+*/
+		if(variantsNumber==0) {
+          for(int i=0; i<ChessInfo.AIChessList.size();i++) {
+			  Chess chess1 = ChessInfo.AIChessList.get(i);
+
+
+			  if(ChessInfo.AIChessList.get(i).getName()=="Lion"){
+			         continue;
+			  }
+
+			  int newY=0;
+
+			  if(chess1.getCoorY()==0) {
+				  newY =5;
+			  }
+
+			  if(chess1.getCoorY()==1) {
+				  newY =4;
+			  }
+
+			  if(chess1.getCoorY()==2) {
+				  newY =3;
+			  }
+
+			 // chess2.setEnemy(isEnemy);
+			  Chess chess3=SetNewPiece(chess1,newY,chess1.getCoorX());
+			  chessboard[newY][chess1.getCoorX()].setChess(chess3);
+			  chessboard[newY][chess1.getCoorX()].setIcon(getChessImage(chess3));
+			  ChessInfo.playerChessList.add(chess3);
+		  }
+
+		}
+
+
+		if(variantsNumber==1) {
+
+			for(int i=0; i<ChessInfo.AIChessList.size();i++) {
+				Chess chess1 = ChessInfo.AIChessList.get(i);
+
+
+				if(ChessInfo.AIChessList.get(i).getName()=="Lion"){
+					continue;
+				}
+
+				int newY=0;
+
+				if(chess1.getCoorY()==0) {
+					newY =8;
+				}
+
+				if(chess1.getCoorY()==1) {
+					newY =7;
+				}
+
+				if(chess1.getCoorY()==2) {
+					newY =6;
+				}
+
+				if(chess1.getCoorY()==3) {
+					newY =5;
+				}
+
+				if(chess1.getCoorY()==4) {
+					newY =4;
+				}
+
+
+				// chess2.setEnemy(isEnemy);
+				Chess chess3=SetNewPiece(chess1,newY,chess1.getCoorX());
+				chessboard[newY][chess1.getCoorX()].setChess(chess3);
+				chessboard[newY][chess1.getCoorX()].setIcon(getChessImage(chess3));
+				ChessInfo.playerChessList.add(chess3);
+			}
+
+
+		}
+
+		if(variantsNumber==2) {
+
+			for(int i=0; i<ChessInfo.AIChessList.size();i++) {
+				Chess chess1 = ChessInfo.AIChessList.get(i);
+
+
+				if(ChessInfo.AIChessList.get(i).getName()=="Lion"){
+					continue;
+				}
+
+				int newY=0;
+
+				if(chess1.getCoorY()==0) {
+					newY =6;
+				}
+
+				if(chess1.getCoorY()==1) {
+					newY =5;
+				}
+
+				if(chess1.getCoorY()==2) {
+					newY =4;
+				}
+
+				if(chess1.getCoorY()==3) {
+					newY =3;
+				}
+
+				// chess2.setEnemy(isEnemy);
+				Chess chess3=SetNewPiece(chess1,newY,chess1.getCoorX());
+				chessboard[newY][chess1.getCoorX()].setChess(chess3);
+				chessboard[newY][chess1.getCoorX()].setIcon(getChessImage(chess3));
+				ChessInfo.playerChessList.add(chess3);
+			}
+
+
+
+		}
+
 	}
 
 
@@ -1035,6 +956,15 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 
 	public void actionPerformed(ActionEvent e) {
 
+
+		//main chess play board
+		for (int i = 0; i < 6; i++) {
+			for (int j = 3; j < 8; j++) {
+				if(chessboard[i][j].getChess()!=null)
+					System.out.println(		chessboard[i][j].getChess().isEnemy());
+			}
+		}
+
 		updateCapturedChessList(variantsNumber );
 		ChessBoard clickBoard=(ChessBoard) e.getSource();//The current clicked position
 
@@ -1064,6 +994,8 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 							  turnToMyTrun(!isPlayerTurn);
 						   } else if (clickBoard.getChess() != null && !clickBoard.getChess().isEnemy()) {
 							  presentChessBoard = clickBoard;// Changing operating pieces
+							   System.out.println(clickBoard.getChess().isEnemy());
+							   System.out.println(clickBoard.getChess().getName());
 							  System.out.println("change the operated chess");
 						   } else if (presentChessBoard.getChess() != null && presentChessBoard.getChess().isHasSpecialWalkWay()) {
 						   	presentChessBoard.getChess().specialWalkWay(presentChessBoard, clickBoard, chessboard);
@@ -1426,8 +1358,75 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 			}
 		}
 
+		if(chess.getName()=="Boar"){
+			if(chess.isEnemy()){
+				return AIBoar;
+			}else {
+				return myBoar;
+			}
+		}
+
+		if(chess.getName()=="Rabbit"){
+			if(chess.isEnemy()){
+				return AIRabbit;
+			}else {
+				return myRabbit;
+			}
+		}
+
            // this is useless return
         return myLionIcon ;
+
+	}
+
+	public Chess  SetNewPiece (Chess chess,int Y,int X ){
+
+		if(chess.getName()=="Dog"){
+
+			Dog dog = new Dog(Y, X, isEnemy);
+				return dog;
+
+		}
+
+		if(chess.getName()=="Cat"){
+
+			Cat cat = new Cat(Y, X, isEnemy);
+			return cat;
+		}
+
+		if(chess.getName()=="Lion"){
+			Lion Lion = new Lion(Y, X, isEnemy);
+			return Lion;
+		}
+
+		if(chess.getName()=="Chick"){
+			Chick Chick = new Chick(Y, X, isEnemy);
+			return Chick;
+		}
+
+		if(chess.getName()=="Elephant"){
+			Elephant Elephant = new Elephant(Y, X, isEnemy);
+			return Elephant;
+		}
+
+		if(chess.getName()=="Giraffe"){
+			Giraffe Giraffe = new Giraffe(Y, X, isEnemy);
+			return Giraffe;
+		}
+
+		if(chess.getName()=="Boar"){
+			Boar Boar = new Boar(Y, X, isEnemy);
+			return Boar;
+		}
+
+		if(chess.getName()=="Rabbit"){
+			Rabbit Rabbit = new Rabbit(Y, X, isEnemy);
+			return Rabbit;
+		}
+
+		// this is useless return
+		Rabbit Rabbit = new Rabbit(Y, X, isEnemy);
+		return Rabbit;
 
 	}
 

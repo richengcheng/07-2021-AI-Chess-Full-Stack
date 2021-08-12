@@ -194,6 +194,4 @@ public class Chess implements Serializable,Cloneable{
 		this.hasSpecialWalkWay = hasSpecialWalkWay;
 	}
 
-	
-
 }

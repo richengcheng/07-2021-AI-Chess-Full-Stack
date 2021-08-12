@@ -102,11 +102,11 @@ public class Cat extends Chess {
                     {
                         //    System.out.println("5656565565656565656565656565656565");
                         if (Math.abs(betweenY) == 1 || Math.abs(betweenY) == 0) {
-                            //up dog can not move  ↖↗
+                            //up cat can not move  ↖↗
                             if(isEnemy()==true&&((this.getCoorY()-b.getCoorY())>0)){
                                 return false;
                             }
-                            //down dog can not move  ↙↘
+                            //down cat can not move  ↙↘
                             if(isEnemy()==false&&((this.getCoorY()-b.getCoorY())<0)){
                                 return false;
                             }

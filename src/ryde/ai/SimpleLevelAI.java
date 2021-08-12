@@ -29,7 +29,6 @@ public class SimpleLevelAI implements Runnable {
 	 * and add the selected result to the corresponding list
 	 */
 	public void allSearch() {
-
 		//if there is piece that AI captured
 		if(ChessInfo.AICapturedPieceList.size()!=0){
 
@@ -306,7 +305,6 @@ public class SimpleLevelAI implements Runnable {
 		}
 		System.out.println("allAIChessWalkWayList"+allAIChessWalkWayList);
 		System.out.println(findBestWay());
-
 
 		//if the best way piece is at waiting board
 		if(checkingIsCapturedList) {
