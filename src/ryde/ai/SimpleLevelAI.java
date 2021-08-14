@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SimpleLevelAI implements Runnable {
+
 	private List<List<Integer>> allAIChessWalkWayList = new ArrayList<List<Integer>>();
 	private List<Integer> allAICapturedChessWalkWayList = new ArrayList<Integer>();
 
@@ -23,6 +24,11 @@ public class SimpleLevelAI implements Runnable {
 	public HashMap<Integer, Integer> allAICapturedChessWalkWayMap = new HashMap<Integer, Integer>();
 
 	private boolean  checkingIsCapturedList= false;
+	private int  variantsNumber;
+
+	public SimpleLevelAI(int variantsNumber){
+		this.variantsNumber=variantsNumber;
+	}
 
 	/**
 	 * Find all the possible footholds of the board,
@@ -30,30 +36,77 @@ public class SimpleLevelAI implements Runnable {
 	 */
 	public void allSearch() {
 		//if there is piece that AI captured
-		if(ChessInfo.AICapturedPieceList.size()!=0){
+		if(variantsNumber==0) {
+			if (ChessInfo.AICapturedPieceList.size() != 0) {
 
-			for (int i = 0; i < 5; i++) {
-				for (int j = 3; j < 8; j++) {
+				for (int i = 0; i < 5; i++) {
+					for (int j = 3; j < 8; j++) {
 
-					if (ChessBoardPanel.chessboard[i][j].getChess() == null) {
-						allAICapturedChessWalkWayList.add(i * 10 + j);
-						allAICapturedChessWalkWayMap.put(i * 10 + j, ChessBoardPanel.chessboard[i][j].getCoorY() * 10 +
-								ChessBoardPanel.chessboard[i][j].getCoorX());
-				    }
+						if (ChessBoardPanel.chessboard[i][j].getChess() == null) {
+							allAICapturedChessWalkWayList.add(i * 100 + j);
+							allAICapturedChessWalkWayMap.put(i * 100 + j, ChessBoardPanel.chessboard[i][j].getCoorY() * 100 +
+									ChessBoardPanel.chessboard[i][j].getCoorX());
+						}
 
+					}
+				}
+			}
+		}
+
+		if(variantsNumber==1) {
+			if (ChessInfo.AICapturedPieceList.size() != 0) {
+
+				for (int i = 0; i < 7; i++) {
+					for (int j = 3; j < 12; j++) {
+
+						if (ChessBoardPanel.chessboard[i][j].getChess() == null) {
+							allAICapturedChessWalkWayList.add(i * 100 + j);
+							allAICapturedChessWalkWayMap.put(i * 100 + j, ChessBoardPanel.chessboard[i][j].getCoorY() * 100 +
+									ChessBoardPanel.chessboard[i][j].getCoorX());
+						}
+
+					}
+				}
+			}
+		}
+
+		if(variantsNumber==2) {
+			if (ChessInfo.AICapturedPieceList.size() != 0) {
+
+				for (int i = 0; i < 6; i++) {
+					for (int j = 3; j <10; j++) {
+
+						if (ChessBoardPanel.chessboard[i][j].getChess() == null) {
+							allAICapturedChessWalkWayList.add(i * 100 + j);
+							allAICapturedChessWalkWayMap.put(i * 100 + j, ChessBoardPanel.chessboard[i][j].getCoorY() * 100 +
+									ChessBoardPanel.chessboard[i][j].getCoorX());
+						}
+
+					}
 				}
 			}
 		}
 
 
+
 		for (int i = 0; i < ChessInfo.AIChessList.size(); i++) {
-//			System.out.println("AI方"+ChessInfo.AIChessList.get(i).getName()+"可移动方位数 :"+ChessInfo.AIChessList.get(i).searchWalkableWay(ChessBoardPanel.chessboard,allAIChesswalkWayMap));
-			allAIChessWalkWayList.add(ChessInfo.AIChessList.get(i).searchWalkableWay(ChessBoardPanel.chessboard, allAIChesswalkWayMap));
+	allAIChessWalkWayList.add(ChessInfo.AIChessList.get(i).searchWalkableWay(ChessBoardPanel.chessboard, allAIChesswalkWayMap,variantsNumber));
 		}
 
 		for (int i = 0; i < ChessInfo.playerChessList.size(); i++) {
-//			System.out.println("我方"+ChessInfo.playerChessList.get(i).getName()+"可移动方位数 :"+ChessInfo.playerChessList.get(i).searchWalkableWay(ChessBoardPanel.chessboard,allPlayerChesswalkWayMap));		
-			allPlayerChessWalkWayList.add(ChessInfo.playerChessList.get(i).searchWalkableWay(ChessBoardPanel.chessboard, allPlayerChesswalkWayMap));
+		allPlayerChessWalkWayList.add(ChessInfo.playerChessList.get(i).searchWalkableWay(ChessBoardPanel.chessboard, allPlayerChesswalkWayMap,variantsNumber));
+		}
+	}
+
+	public int movingForwardScore( int currentY ,Chess chess){
+
+		if((currentY-chess.getCoorY())>0){
+			return 100;
+		}
+		else if((currentY-chess.getCoorY())==0){
+			return 0;
+		}else {
+			return -100;
 		}
 	}
 
@@ -70,29 +123,41 @@ public class SimpleLevelAI implements Runnable {
 			//The score of the j-th move of the i-th piece
 			for (int j = 0; j < walkWayList.size(); j++) {
 				//if the this  board  at current walk way is empty
-				if (ChessBoardPanel.chessboard[walkWayList.get(j) / 10][walkWayList.get(j) % 10].getChess() == null) {
+				if (ChessBoardPanel.chessboard[walkWayList.get(j) / 100][walkWayList.get(j) % 100].getChess() == null) {
 					//Go forward and get a point
-					highScore++;
+
+					highScore=movingForwardScore(walkWayList.get(j)/100, ChessInfo.AIChessList.get(i));
+					//highScore++;
+					//	if the player can also reach that walk way board, which means if AI go there, next around the AI piece will be token
+					// so totally it means this way is really really dangerous
+					if (allPlayerChesswalkWayMap.containsKey(walkWayList.get(j))) {
+						//lose the score of the chess that will be token if go this way
+						highScore -= ChessInfo.AIChessList.get(i).getValue();
+					}
+
 				} else {// if there is a enemy piece at this current walk way board
-					Chess chess = ChessBoardPanel.chessboard[walkWayList.get(j) / 10][walkWayList.get(j) % 10].getChess();
+					Chess chess = ChessBoardPanel.chessboard[walkWayList.get(j) / 100][walkWayList.get(j) % 100].getChess();
 					//AI gets the chess piece and scores the chess piece
-					highScore++;
+				//	highScore++;
+					highScore=movingForwardScore(walkWayList.get(j)/100, ChessInfo.AIChessList.get(i));
 					highScore += chess.getValue();
+
+
+
 					// here we are assuming that board has no  piece
-					ChessBoardPanel.chessboard[walkWayList.get(j) / 10][walkWayList.get(j) % 10].setChess(null);
+					ChessBoardPanel.chessboard[walkWayList.get(j) / 100][walkWayList.get(j) % 100].setChess(null);
 					//Pieces eaten by AI are under the protection of the player, and points are reduced (except for the king)
 					//IF the that piece is not lion and also that board is under attack by Human beings, so that value of the
 					//piece min loose score
-
 					for (int k = 0; k < ChessInfo.playerChessList.size(); k++) {
 						if (/**!chess.getName().equals("king") &&*/ ChessInfo.playerChessList.get(k).isWalkable(ChessBoardPanel.
-								chessboard[walkWayList.get(j) / 10][walkWayList.get(j) % 10], ChessBoardPanel.chessboard)) {
+								chessboard[walkWayList.get(j) / 100][walkWayList.get(j) % 100], ChessBoardPanel.chessboard)) {
 							highScore -= ChessInfo.AIChessList.get(i).getValue();
 						}
 					}
 
 					//set the piece back
-					ChessBoardPanel.chessboard[walkWayList.get(j) / 10][walkWayList.get(j) % 10].setChess(chess);
+					ChessBoardPanel.chessboard[walkWayList.get(j) / 100][walkWayList.get(j) % 100].setChess(chess);
 
 				}
 
@@ -114,13 +179,6 @@ public class SimpleLevelAI implements Runnable {
 
 				//Deduct the maximum threat value points
 				highScore -= maxValue;
-				//	if the player can also reach that walk way board, which means if AI go there, next around the AI piece will be token
-				// so totally it means this way is really really dangerous
-
-				if (allPlayerChesswalkWayMap.containsKey(walkWayList.get(j))) {
-					//lose the score of the chess that will be token if go this way
-					highScore -= ChessInfo.AIChessList.get(i).getValue();
-				}
 
 
 				//The score of each move of the piece is saved into the list
@@ -147,42 +205,42 @@ public class SimpleLevelAI implements Runnable {
 			//The score of the j-th move of the i-th piece
 			for (int j = 0; j < allAICapturedChessWalkWayList.size(); j++) {
 				//if the this  board  at current walk way is empty
-				if (ChessBoardPanel.chessboard[allAICapturedChessWalkWayList.get(j) / 10][allAICapturedChessWalkWayList.get(j) % 10].getChess() == null) {
+				if (ChessBoardPanel.chessboard[allAICapturedChessWalkWayList.get(j) / 100][allAICapturedChessWalkWayList.get(j) % 100].getChess() == null) {
 					//Go forward and get a point
 					highScore++;
 					highScore++;
-					highScore=highScore+400;
+					highScore=highScore+200;
 				} else {// if there is a enemy piece at this current walk way board
-					Chess chess = ChessBoardPanel.chessboard[allAICapturedChessWalkWayList.get(j) / 10][allAICapturedChessWalkWayList.get(j) % 10].getChess();
+					Chess chess = ChessBoardPanel.chessboard[allAICapturedChessWalkWayList.get(j) / 100][allAICapturedChessWalkWayList.get(j) % 100].getChess();
 					//AI gets the chess piece and scores the chess piece
 					highScore++;
 					highScore++;
 					highScore += chess.getValue();
 					// here we are assuming that board has no  piece
-					ChessBoardPanel.chessboard[allAICapturedChessWalkWayList.get(j) / 10][allAICapturedChessWalkWayList.get(j) % 10].setChess(null);
+					ChessBoardPanel.chessboard[allAICapturedChessWalkWayList.get(j) / 100][allAICapturedChessWalkWayList.get(j) % 100].setChess(null);
 					//Pieces eaten by AI are under the protection of the player, and points are reduced (except for the king)
 					//IF the that piece is not lion and also that board is under attack by Human beings, so that value of the
 					//piece min loose score
 					for (int k = 0; k < ChessInfo.playerChessList.size(); k++) {
 						if (!chess.getName().equals("king") && ChessInfo.playerChessList.get(k).isWalkable(ChessBoardPanel.
-								chessboard[allAICapturedChessWalkWayList.get(j) / 10][allAICapturedChessWalkWayList.get(j) % 10], ChessBoardPanel.chessboard)) {
+								chessboard[allAICapturedChessWalkWayList.get(j) / 100][allAICapturedChessWalkWayList.get(j) % 100], ChessBoardPanel.chessboard)) {
 							highScore -= chess.getValue();
 						}
 					}
 					//set the piece back
-					ChessBoardPanel.chessboard[allAICapturedChessWalkWayList.get(j) / 10][allAICapturedChessWalkWayList.get(j) % 10].setChess(chess);
+					ChessBoardPanel.chessboard[allAICapturedChessWalkWayList.get(j) / 100][allAICapturedChessWalkWayList.get(j) % 100].setChess(chess);
 
 				}
 
 
 				//	if the player can also reach that walk way board, which means if AI go there, next around the AI piece will be token
 				// so totally it means this way is really really dangerous
-/**
+
 				if (allPlayerChesswalkWayMap.containsKey(allAICapturedChessWalkWayList.get(j))) {
 					//lose the score of the chess that will be token if go this way
 					highScore -= ChessInfo.AIChessList.get(i).getValue();
 				}
-*/
+
 
 				//The score of each move of the piece is saved into the list
 				eachWayValueList.add(highScore);
@@ -316,14 +374,14 @@ public class SimpleLevelAI implements Runnable {
 			ChessBoardPanel.moveChess(
 					ChessBoardPanel.chessboard[ChessInfo.AICapturedPieceList.
 							get(index1 / 100).getCoorY()][ChessInfo.AICapturedPieceList.get(index1 / 100).getCoorX()],
-					ChessBoardPanel.chessboard[index3 / 10][index3 % 10]);
+					ChessBoardPanel.chessboard[index3 / 100][index3 % 100]);
 		}else {
 
 			int index2 = allAIChessWalkWayList.get(index1 / 100).get(index1 % 100);
 			ChessBoardPanel.moveChess(
 					ChessBoardPanel.chessboard[ChessInfo.AIChessList.get(index1 / 100).
 							getCoorY()][ChessInfo.AIChessList.get(index1 / 100).getCoorX()],
-					ChessBoardPanel.chessboard[index2 / 10][index2 % 10]);
+					ChessBoardPanel.chessboard[index2 / 100][index2 % 100]);
 		}
 	}
 

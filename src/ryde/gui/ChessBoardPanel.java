@@ -843,19 +843,19 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 				int newY=0;
 
 				if(chess1.getCoorY()==0) {
-					newY =6;
+					newY =7;
 				}
 
 				if(chess1.getCoorY()==1) {
-					newY =5;
+					newY =6;
 				}
 
 				if(chess1.getCoorY()==2) {
-					newY =4;
+					newY =5;
 				}
 
 				if(chess1.getCoorY()==3) {
-					newY =3;
+					newY =4;
 				}
 
 				// chess2.setEnemy(isEnemy);
@@ -956,17 +956,16 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 
 	public void actionPerformed(ActionEvent e) {
 
+      System.out.println("last current chess board"+presentChessBoard.getCoorY()+"          "+presentChessBoard.getCoorX());
 
-		//main chess play board
-		for (int i = 0; i < 6; i++) {
-			for (int j = 3; j < 8; j++) {
-				if(chessboard[i][j].getChess()!=null)
-					System.out.println(		chessboard[i][j].getChess().isEnemy());
-			}
-		}
+
 
 		updateCapturedChessList(variantsNumber );
 		ChessBoard clickBoard=(ChessBoard) e.getSource();//The current clicked position
+
+
+		System.out.println("current click chess board"+clickBoard.getCoorY()+"          "+clickBoard.getCoorX());
+
 
 		// checking if it is for down player
 		if(MainPlayFrame.player1InfoJpanel.getMyTurn()) {
@@ -1004,6 +1003,9 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 							System.out.println("can not move");
 						}
 					  }
+					} else if(clickBoard.getIsWaitingBorad()==2  && clickBoard.getChess()!=null ){
+						presentChessBoard = clickBoard;// update
+						System.out.println("update captured  piece");
 					} else {
 						System.out.println("can not move");
 					}
@@ -1017,16 +1019,32 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 					if(clickBoard.getChess()==null) {
 						moveChess(presentChessBoard, clickBoard);
 						turnToMyTrun(!isPlayerTurn);
-					}else {
+					}else if(clickBoard.getChess()!=null && !clickBoard.getChess().isEnemy()){
+						presentChessBoard = clickBoard;// update
+						System.out.println("update chess from captured  piece to board chess");
+					}
+					else {
 						System.out.println("can not move");
 					}
 				}
-				else if(presentChessBoard.getIsWaitingBorad()==2 && clickBoard.getIsWaitingBorad()==2 ){
+
+				else if(presentChessBoard.getIsWaitingBorad()==0 && clickBoard.getIsWaitingBorad()==2 && clickBoard.getChess()!=null ){
+					//		System.out.println("544444444444444444444444444444444444");
+					// there need to check more
+					System.out.println("choose the captured chess");
 					presentChessBoard = clickBoard;// update
+				}
+
+				else if(presentChessBoard.getIsWaitingBorad()==2 && clickBoard.getIsWaitingBorad()==2 ){
+
+				     presentChessBoard = clickBoard;// update
 					System.out.println("update captured  piece");
+
+
 				}
 			} else {// get a new presentChessBoard from the main board area or the option chess area
 				if (clickBoard.getChess() != null && (!clickBoard.getChess().isEnemy())||clickBoard.getIsWaitingBorad()==2) {
+					System.out.println("update present ChessBoard piece");
 					presentChessBoard = clickBoard;// update
 				}
 			}

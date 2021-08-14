@@ -5,9 +5,9 @@ import ryde.InternetChess.Chess;
 import ryde.battle.ChessInfo;
 import ryde.gui.ChessBoard;
 import ryde.gui.ChessBoardPanel;
+import ryde.battle.ChessInfoMinMax;
 
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,12 +22,36 @@ public class MinimaxAI  implements Runnable  {
 
     private List<List<Integer>> allPlayerChessWalkWayList = new ArrayList<List<Integer>>();
 
+
     public static HashMap<Integer, Integer> allPlayerChesswalkWayMap = new HashMap<Integer, Integer>();
 
     public HashMap<Integer, Integer> allAIChesswalkWayMap = new HashMap<Integer, Integer>();
     public HashMap<Integer, Integer> allAICapturedChessWalkWayMap = new HashMap<Integer, Integer>();
 
     private boolean  checkingIsCapturedList= false;
+
+    private int  variantsNumber;
+
+
+
+    private static int PieceY=0,PieceX=0,numberOfWalkWay=0;
+    public MinimaxAI(int variantsNumber){
+        this.variantsNumber=variantsNumber;
+        int X=0,Y=0;
+/*
+        if(variantsNumber==0){
+            Y=6;X=11;
+        }else if(variantsNumber==1){
+            Y=9;X=15;
+        }else {
+            Y=8;X=13;
+        }
+
+       currentChessBoard = new ChessBoard[Y][X] ;
+*/
+
+    }
+
 
     /**
      * Find all the possible footholds of the board,
@@ -36,30 +60,64 @@ public class MinimaxAI  implements Runnable  {
     public void allSearch() {
 
         //if there is piece that AI captured
-        if(ChessInfo.AICapturedPieceList.size()!=0){
+        if(variantsNumber==0) {
+            if (ChessInfo.AICapturedPieceList.size() != 0) {
 
-            for (int i = 0; i < 5; i++) {
-                for (int j = 3; j < 8; j++) {
+                for (int i = 0; i < 5; i++) {
+                    for (int j = 3; j < 8; j++) {
 
-                    if (ChessBoardPanel.chessboard[i][j].getChess() == null) {
-                        allAICapturedChessWalkWayList.add(i * 10 + j);
-                        allAICapturedChessWalkWayMap.put(i * 10 + j, ChessBoardPanel.chessboard[i][j].getCoorY() * 10 +
-                                ChessBoardPanel.chessboard[i][j].getCoorX());
+                        if (ChessBoardPanel.chessboard[i][j].getChess() == null) {
+                            allAICapturedChessWalkWayList.add(i * 100 + j);
+                            allAICapturedChessWalkWayMap.put(i * 100 + j, ChessBoardPanel.chessboard[i][j].getCoorY() * 100 +
+                                    ChessBoardPanel.chessboard[i][j].getCoorX());
+                        }
+
                     }
+                }
+            }
+        }
 
+        if(variantsNumber==1) {
+            if (ChessInfo.AICapturedPieceList.size() != 0) {
+
+                for (int i = 0; i < 7; i++) {
+                    for (int j = 3; j < 12; j++) {
+
+                        if (ChessBoardPanel.chessboard[i][j].getChess() == null) {
+                            allAICapturedChessWalkWayList.add(i * 100 + j);
+                            allAICapturedChessWalkWayMap.put(i * 100 + j, ChessBoardPanel.chessboard[i][j].getCoorY() * 100 +
+                                    ChessBoardPanel.chessboard[i][j].getCoorX());
+                        }
+
+                    }
+                }
+            }
+        }
+
+        if(variantsNumber==2) {
+            if (ChessInfo.AICapturedPieceList.size() != 0) {
+
+                for (int i = 0; i < 6; i++) {
+                    for (int j = 3; j <10; j++) {
+
+                        if (ChessBoardPanel.chessboard[i][j].getChess() == null) {
+                            allAICapturedChessWalkWayList.add(i * 100 + j);
+                            allAICapturedChessWalkWayMap.put(i * 100 + j, ChessBoardPanel.chessboard[i][j].getCoorY() * 100 +
+                                    ChessBoardPanel.chessboard[i][j].getCoorX());
+                        }
+
+                    }
                 }
             }
         }
 
 
         for (int i = 0; i < ChessInfo.AIChessList.size(); i++) {
-//			System.out.println("AI方"+ChessInfo.AIChessList.get(i).getName()+"可移动方位数 :"+ChessInfo.AIChessList.get(i).searchWalkableWay(ChessBoardPanel.chessboard,allAIChesswalkWayMap));
-            allAIChessWalkWayList.add(ChessInfo.AIChessList.get(i).searchWalkableWay(ChessBoardPanel.chessboard, allAIChesswalkWayMap));
+      allAIChessWalkWayList.add(ChessInfo.AIChessList.get(i).searchWalkableWay(ChessBoardPanel.chessboard, allAIChesswalkWayMap,variantsNumber));
         }
 
         for (int i = 0; i < ChessInfo.playerChessList.size(); i++) {
-//			System.out.println("我方"+ChessInfo.playerChessList.get(i).getName()+"可移动方位数 :"+ChessInfo.playerChessList.get(i).searchWalkableWay(ChessBoardPanel.chessboard,allPlayerChesswalkWayMap));
-            allPlayerChessWalkWayList.add(ChessInfo.playerChessList.get(i).searchWalkableWay(ChessBoardPanel.chessboard, allPlayerChesswalkWayMap));
+      allPlayerChessWalkWayList.add(ChessInfo.playerChessList.get(i).searchWalkableWay(ChessBoardPanel.chessboard, allPlayerChesswalkWayMap,variantsNumber));
         }
     }
 
@@ -74,16 +132,16 @@ public class MinimaxAI  implements Runnable  {
      * 300 for the AI’s hand (ready to drop anywhere)
      */
 
-    public int countValue(List<Chess> AIChessList,List<Chess> AICapturedChessList) {
+    public int countValue(ChessInfoMinMax ChessInfoMinMax) {
         int highScore = 0;
         //I-th chess piece
-        for (int i = 0; i < AIChessList.size(); i++) {
+        for (int i = 0; i < ChessInfoMinMax.AIPieceList.size(); i++) {
 
-            if(AIChessList.get(i).getName()=="Lion") {
-                highScore = 10000000;
-            }
+            //count  each piece value
+            highScore =highScore+ ChessInfoMinMax.AIPieceList.get(i).getValue();
 
-            switch(AIChessList.get(i).getCoorY()) {
+
+            switch(ChessInfoMinMax.AIPieceList.get(i).getCoorY()) {
                 case 0:
                     break;
                 case 1:
@@ -97,149 +155,277 @@ public class MinimaxAI  implements Runnable  {
                 case 5:
                     highScore=highScore+800; break;
                 case 6:
-                    break;
+                    highScore=highScore+800; break;
+                case 7:
+                    highScore=highScore+800; break;
+                case 8:
+                    highScore=highScore+800; break;
+                case 9:
+                    highScore=highScore+800; break;
             }
 
         }
-
-        for (int i = 0; i < AICapturedChessList.size(); i++) {
+         //count each value of AI Captured Piece
+        for (int i = 0; i < ChessInfoMinMax.AICapturedPieceList.size(); i++) {
             highScore=highScore+300;
+        }
+
+        //count each value of player Captured Piece
+        for (int i = 0; i < ChessInfoMinMax.playerPieceList.size(); i++) {
+            highScore = highScore - ChessInfoMinMax.AIPieceList.get(i).getValue();
+        }
+
+        //count each value of player Captured Piece
+        for (int i = 0; i < ChessInfoMinMax.PlayerCapturedPieceList.size(); i++) {
+            highScore=highScore-300;
         }
 
         return highScore;
     }
 
 
-    public int minimax( int depth, boolean maximizingplayer, ChessBoard[][] currentChessBoard,List<Chess> AICaputerdPieceList,
-                       List<Chess> PlayerCaputerdPieceList, List<Chess> AIPieceList,List<Chess> PlayerPieceList    ){
 
-        if (depth ==0){
+    public int minimax( int depth, boolean maximizingplayer,ChessInfoMinMax preChessInfoMinMax, ChessBoard[][] currentChessBoard,List<Chess> AICapturedPieceList,
+                       List<Chess> PlayerCapturedPieceList, List<Chess> AIPieceList, List<Chess> playerPieceList    ) {
 
+        System.out.println("AIPieceList size "+ AIPieceList.size());
+        System.out.println("current depth "+ depth);
+
+
+
+        if (depth == 5) {
+            System.out.println("!!current depth "+ depth+"value of best move                                        "+ countValue(preChessInfoMinMax));
+            return countValue(preChessInfoMinMax);
         }
-        if(maximizingplayer){
-            int maxEval = -10000000;
 
+
+
+
+
+
+        if (maximizingplayer) {
+            int BestMove = -10000000;
             //each AI piece
-            for(int j=0;j<AIPieceList.size();j++) {
+            List<Chess>  AIPieceListStore =new ArrayList<Chess>(AIPieceList);
 
-                List<Integer> allCurrentChessWalkWayList = new ArrayList<>();
+            for (int j = 0; j < AIPieceListStore.size(); j++) {
+
+
+            //    if(depth==0) {
+                    for (int k = 0; k < AIPieceListStore.size(); k++) {
+                        System.out.println("!!current depth       "+ depth+"                  !! get AIPieceList position " + AIPieceList.get(k).getCoorY() + "       " + AIPieceList.get(k).getCoorX());
+                    }
+            //    }
+
+                List<Integer> allCurrentChessWalkWayList = new ArrayList<Integer>();
                 //get walk way list of current piece
-                allCurrentChessWalkWayList = (AIPieceList.get(j).searchWalkableWay(currentChessBoard));
+                allCurrentChessWalkWayList = AIPieceList.get(j).searchWalkableWay(currentChessBoard, variantsNumber);
 
+                //check  each  walkable way  of current piece
                 for (int i = 0; i < allCurrentChessWalkWayList.size(); i++) {
-                    // for each  child of chess  position
 
+                    System.out.println("current depth "+ depth+"allCurrentChessWalkWayList size"+allCurrentChessWalkWayList.size());
 
-                    // move chess
                     {
-                        int Y = allCurrentChessWalkWayList.get(i) % 10;
-                        int X = allCurrentChessWalkWayList.get(i) / 10;
+                        int X1=0,Y1=0;
 
-                        // if current board contain a chess and this board is main working board
-                        if (currentChessBoard[Y][X].getChess() != null && AIPieceList.get(j).isEnemy() != currentChessBoard[Y][X].getChess().isEnemy()) {//
+                        if(variantsNumber==0){
+                            Y1=6;X1=11;
+                        }else if(variantsNumber==1){
+                            Y1=9;X1=15;
+                        }else {
+                            Y1=8;X1=13;
+                        }
 
-                            Chess chessExange = currentChessBoard[Y][X].getChess();
+                        AIPieceList=new ArrayList<Chess>(AIPieceList);
+                        playerPieceList=new ArrayList<Chess>(playerPieceList);
+                        PlayerCapturedPieceList=new ArrayList<Chess>(PlayerCapturedPieceList);
+                        AICapturedPieceList=new ArrayList<Chess>(AICapturedPieceList);
+                        ChessBoard[][] currentChessBoardStore=new ChessBoard[Y1][X1];
+                        currentChessBoardStore=currentChessBoard;
 
-                            //change the chess enemy state
-                            chessExange.setEnemy(!chessExange.isEnemy());
-                            //	ChessInfo.AIChessList.remove(chessExange2);
-                            //set the chess to be no promoted because it is the chess dead
-                            chessExange.setIsPromoted(false);
+                        //set a new ChessInfor board which can store the current step infor
+                        ChessInfoMinMax ChessInfoMinMax = new ChessInfoMinMax(currentChessBoardStore, AICapturedPieceList,
+                                PlayerCapturedPieceList, AIPieceList, playerPieceList);
 
-                            if ( AIPieceList.get(j).isEnemy()) {
-                                PlayerPieceList.remove(currentChessBoard[Y][X].getChess());
-                                AICaputerdPieceList.add(chessExange);
-                            } else {
+                        int Y = allCurrentChessWalkWayList.get(i) / 100;
+                        int X = allCurrentChessWalkWayList.get(i) % 100;
 
-                                AIPieceList.remove(currentChessBoard[Y][X].getChess());
-                                PlayerCaputerdPieceList.add(chessExange);
+                        //store the current piece information
+                        Chess currentPiece = AIPieceList.get(j);
 
-                            }
-                            System.out.println("chess moved by moveChess function ");
+
+                        // if current board does not contain a piece which is enemy piece and this board is main working board
+                        if (currentChessBoard[Y][X].getChess() == null && currentChessBoard[Y][X].getIsWaitingBorad() == 0) {
+
+                            //remove the current piece from AI piece list
+                            ChessInfoMinMax.AIPieceList.remove(j);
+
+                            //update piece
+                            currentPiece.setCoor(currentChessBoard[Y][X]);
+
+                            // updated  chess board
+                            ChessInfoMinMax.currentChessBoard[Y][X].setChess(null);
+
+                            // updated  chess board
+                            ChessInfoMinMax.currentChessBoard[Y][X].setChess(currentPiece);
+
+                            //add the updated piece back
+                            ChessInfoMinMax.AIPieceList.add(currentPiece);
+
+                        }
+                        // if current board does not contain a piece which is enemy piece and this board is main working board
+                        else if (currentChessBoard[Y][X].getChess() != null && currentChessBoard[Y][X].getIsWaitingBorad() == 0) {
+
+                            //remove the current piece from AI piece list
+                            ChessInfoMinMax.AIPieceList.remove(j);
+
+                            //get the players chess
+                            Chess currentPlayerPiece = currentChessBoard[Y][X].getChess();
+
+                            //update players piece list
+                            ChessInfoMinMax.playerPieceList.remove(currentPlayerPiece);
+
+                            //update AI piece location
+                            currentPiece.setCoor(currentChessBoard[Y][X]);
+
+                            // updated  chess board
+                            ChessInfoMinMax.currentChessBoard[Y][X].setChess(null);
+
+                            // updated  chess board
+                            ChessInfoMinMax.currentChessBoard[Y][X].setChess(currentPiece);
+
+                            //add the updated piece back
+                            ChessInfoMinMax.AIPieceList.add(currentPiece);
 
                         }
 
-                        currentChessBoard[Y][X].setChess(null);
-                        currentChessBoard[Y][X].setChess(AIPieceList.get(j));
+                        int k=0;
+                        System.out.println();
 
-                        //update
-                        AIPieceList.get(j).setCoor(currentChessBoard[Y][X]);
+                        BestMove= maxValue(BestMove, minimax(depth + 1, maximizingplayer, ChessInfoMinMax, ChessInfoMinMax.currentChessBoard, ChessInfoMinMax.AICapturedPieceList,
+                                ChessInfoMinMax.PlayerCapturedPieceList, ChessInfoMinMax.AIPieceList, ChessInfoMinMax.playerPieceList),depth,AIPieceList.get(j).getCoorY(),
+                                AIPieceList.get(j).getCoorX(),allCurrentChessWalkWayList.get(i));
+                       // System.out.println("current depth "+ depth+"current piece name is "+ AIPieceList.get(j).getName());
+
+
 
                     }
-                  //  chess.setCoorX(allCurrentChessWalkWayList.get(i) % 10);
-                  //  chess.setCoorY(allCurrentChessWalkWayList.get(i) / 10);
 
-
-                    int valueOfChid = minimax( depth - 1, maximizingplayer, currentChessBoard, AICaputerdPieceList,
-                            PlayerCaputerdPieceList, AIPieceList, PlayerPieceList);
-
-                    if (maxEval <= valueOfChid) {
-                        maxEval = valueOfChid;
-                    }
                 }
             }
+         System.out.println("current depth "+ depth+"value of best move                                        "+ BestMove);
+            return BestMove;
 
-            return maxEval;
+        }
+        return 0;
+    }
 
+    public int maxValue(int a,int b,int depth,int pieceY,int pieceX, int i){
 
-        }else{
-            int minEval = 10000000;
-            List<Integer> allCurrentChessWalkWayList = new ArrayList<>();
-            allCurrentChessWalkWayList=(PlayerPieceList.get(1).searchWalkableWay(ChessBoardPanel.chessboard));
-            for(int i=0;i<allCurrentChessWalkWayList.size();i++) {
-                // for each  child of chess  position
-               // chess.setCoorX(allCurrentChessWalkWayList.get(i)%10);
-              //  chess.setCoorY(allCurrentChessWalkWayList.get(i)/10);
-                minimax( depth-1,!maximizingplayer,currentChessBoard,AICaputerdPieceList,
-                        PlayerCaputerdPieceList,  AIPieceList,PlayerPieceList  );
+        if(a<b){
+            a=b;
+            //record the destination at the root
+            if(depth==0){
+                PieceY=pieceY;
+                PieceX=pieceX;
+                numberOfWalkWay=i;
             }
-            return minEval;
         }
 
+        return a;
     }
 
 
+    public void moveToBestWay(ChessBoard[][] currentChessBoard,List<Chess> AICapturedPieceList,
+                              List<Chess> PlayerCapturedPieceList, List<Chess> AIPieceList, List<Chess> playerPieceList) {
+        PieceY=0;
+        PieceX=0;
+        numberOfWalkWay=0;
+        int k=0;
+        int X=0,Y=0;
 
-    //for minimax
-    public void moveChessMinimax(ChessBoard [][]  chessboard, int X,int Y,Chess chess,List<Chess>  AICaputerdPieceList,
-                                 List<Chess> PlayerCaputerdPieceList , List<Chess> AIPieceList,List<Chess> PlayerPieceList ) {
 
-        // if current board contain a chess and this board is main working board
-        if (chessboard[Y][X].getChess()!=null&& chess.isEnemy()!=chessboard[Y][X].getChess().isEnemy()) {//
-
-            Chess chessExange = chessboard[Y][X].getChess();
-
-           //change the chess enemy state
-            chessExange.setEnemy(!chessExange.isEnemy());
-            //	ChessInfo.AIChessList.remove(chessExange2);
-            //set the chess to be no promoted because it is the chess dead
-            chessExange.setIsPromoted(false);
-
-            if (chess.isEnemy()) {
-                PlayerPieceList.remove(chessboard[Y][X].getChess());
-                AICaputerdPieceList.add(chessExange);
-            }else {
-
-                AIPieceList.remove(chessboard[Y][X].getChess());
-                PlayerCaputerdPieceList.add(chessExange);
-
-            }
-            System.out.println("chess moved by moveChess function ");
-
+        if(variantsNumber==0){
+            Y=6;X=11;
+        }else if(variantsNumber==1){
+            Y=9;X=15;
+        }else {
+            Y=8;X=13;
         }
 
-        chessboard[Y][X].setChess(null);
-        chessboard[Y][X].setChess(chess);
+        ChessInfoMinMax preChessInfoMinMax= new ChessInfoMinMax();
 
-        chess.setCoor(chessboard[Y][X]);
+        AIPieceList=new ArrayList<Chess>(AIPieceList);
+        playerPieceList=new ArrayList<Chess>(playerPieceList);
+        PlayerCapturedPieceList=new ArrayList<Chess>(PlayerCapturedPieceList);
+        AICapturedPieceList=new ArrayList<Chess>(AICapturedPieceList);
+        ChessBoard[][] currentChessBoardStore=new ChessBoard[Y][X];
+        currentChessBoardStore=currentChessBoard;
+
+        k= minimax(0, true, preChessInfoMinMax,
+                currentChessBoardStore, AICapturedPieceList,
+                PlayerCapturedPieceList, AIPieceList,  playerPieceList);
+
+
+        System.out.println("k is "+k);
+/*
+        System.out.println("6666666666666666666666666666666666666666666666 "+ChessInfo.AIChessList.
+                get(numberOfChess).getName());
+        System.out.println("6666666666666666666666666666666666666666666666 "+ChessInfo.AIChessList.
+                get(numberOfChess).getCoorX());
+        System.out.println("6666666666666666666666666666666666666666666666 "+ChessInfo.AIChessList.
+                get(numberOfChess).getCoorY());
+        System.out.println("6666666666666666666666666666666666666666666666 "+ChessBoardPanel.chessboard[ChessInfo.AIChessList.
+                get(numberOfChess).getCoorY()][ChessInfo.AIChessList.
+                get(numberOfChess).getCoorX()].getCoorX());
+        System.out.println("6666666666666666666666666666666666666666666666 "+ChessBoardPanel.chessboard[ChessInfo.AIChessList.
+                get(numberOfChess).getCoorY()][ChessInfo.AIChessList.
+                get(numberOfChess).getCoorX()].getCoorY());
+        */
+/*
+        ChessBoardPanel.moveChess(ChessBoardPanel.chessboard[ChessInfo.AIChessList.
+                get(numberOfChess).getCoorY()][ChessInfo.AIChessList.
+                get(numberOfChess).getCoorX()],ChessBoardPanel.chessboard[numberOfWalkWay / 100][numberOfWalkWay % 100]);
+        */
 
     }
+
+    public void clearStatus() {
+
+        allPlayerChessWalkWayList.clear();
+        allAIChessWalkWayList.clear();
+
+        allAICapturedChessWalkWayList.clear();
+
+        allAIWalkWayValueList.clear();
+        allAICapturedChessWalkWayValueList.clear();
+
+        allPlayerChesswalkWayMap.clear();
+
+        allAIChesswalkWayMap.clear();
+        allAICapturedChessWalkWayMap.clear();
+
+        checkingIsCapturedList=false;
+
+        for (int i = 0; i < ChessInfo.AIChessList.size(); i++) {
+            ChessInfo.AIChessList.get(i).setUnderAttack(false);
+        }
+        for (int i = 0; i < ChessInfo.playerChessList.size(); i++) {
+            ChessInfo.playerChessList.get(i).setUnderAttack(false);
+        }
+    }
+
 
     public void run() {
         try {
             while (true) {
                 if (!ChessBoardPanel.isPlayerTurn()) {
                     ChessBoardPanel.setPlayerTurn(true);
+                    moveToBestWay(ChessBoardPanel.chessboard,ChessInfo.AICapturedPieceList,
+                            ChessInfo.PlayerCapturedPieceList, ChessInfo.AIChessList,  ChessInfo.playerChessList);
+                    System.out.println("111111111111111111111111111111111111111111111111111111111111 the destination "+PieceY+"     "+PieceX+"     "+numberOfWalkWay);
+                    clearStatus();
                     ChessBoardPanel.turnToMyTrun(true);
                 }
                 Thread.sleep(100);

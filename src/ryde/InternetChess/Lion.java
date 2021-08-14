@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Lion extends Chess {
 
     public Lion(int y,int x,boolean isEnemy){
-        super(y,x,"Lion",1000,isEnemy);
+        super(y,x,"Lion",10000,isEnemy);
     }
 
     public boolean isWalkable(ChessBoard click, ChessBoard[][] bs) {

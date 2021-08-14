@@ -7,7 +7,7 @@ public class Elephant extends Chess {
     private int firstPlace;
 
     public Elephant(int y, int x, boolean isEnemy){
-        super(y,x,"Elephant",600,isEnemy);
+        super(y,x,"Elephant",800,isEnemy);
         firstPlace=y;
     }
 

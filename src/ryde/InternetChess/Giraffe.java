@@ -7,7 +7,7 @@ public class Giraffe extends Chess {
     private int firstPlace;
 
     public Giraffe(int y, int x, boolean isEnemy){
-        super(y,x,"Giraffe",600,isEnemy);
+        super(y,x,"Giraffe",800,isEnemy);
         firstPlace=y;
     }
 

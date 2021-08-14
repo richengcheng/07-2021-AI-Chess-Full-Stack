@@ -48,43 +48,118 @@ public class Chess implements Serializable,Cloneable{
 	 * @return   List with two-digit numbers as coordinates
 	 */
 
-	public ArrayList<Integer> searchWalkableWay(ChessBoard[][] bs,Map<Integer, Integer> walkWayMap){
+	public ArrayList<Integer> searchWalkableWay(ChessBoard[][] bs,Map<Integer, Integer> walkWayMap,int variantsNumber){
 		ArrayList<Integer> walkWayList=new ArrayList<Integer>();
-		for (int i = 0; i < 6; i++) {
-			for (int j = 3; j < 8; j++) {
-				if (isWalkable(bs[i][j], bs)) {
-					//the current board of chess is not null and also the chess will be marked as underattacked
-					if (bs[i][j].getChess()!=null&&bs[i][j].getChess().isEnemy()!=this.isEnemy()) {
-						bs[i][j].getChess().setUnderAttack(true);
-					}
-					//input the walk way list
-					walkWayList.add(i*10+j);
-					//build a map reflection
-					walkWayMap.put(i*10+j, getCoorY()*10+getCoorX());
+		if(variantsNumber==0) {
+			for (int i = 0; i < 6; i++) {
+				for (int j = 3; j < 8; j++) {
+					if (isWalkable(bs[i][j], bs)) {
+						//the current board of chess is not null and also the chess will be marked as underattacked
+						if (bs[i][j].getChess() != null && bs[i][j].getChess().isEnemy() != this.isEnemy()) {
+							bs[i][j].getChess().setUnderAttack(true);
+						}
+						//input the walk way list
+						walkWayList.add(i * 100 + j);
+						//build a map reflection
+						walkWayMap.put(i * 100 + j, getCoorY() * 100 + getCoorX());
 
+					}
 				}
 			}
 		}
+
+
+		if(variantsNumber==1) {
+			for (int i = 0; i < 9; i++) {
+				for (int j = 3; j < 12; j++) {
+					if (isWalkable(bs[i][j], bs)) {
+						//the current board of chess is not null and also the chess will be marked as underattacked
+						if (bs[i][j].getChess() != null && bs[i][j].getChess().isEnemy() != this.isEnemy()) {
+							bs[i][j].getChess().setUnderAttack(true);
+						}
+						//input the walk way list
+						walkWayList.add(i * 100 + j);
+						//build a map reflection
+						walkWayMap.put(i * 100 + j, getCoorY() * 100 + getCoorX());
+
+					}
+				}
+			}
+		}
+
+		if(variantsNumber==2) {
+			for (int i = 0; i < 8; i++) {
+				for (int j = 3; j < 10; j++) {
+					if (isWalkable(bs[i][j], bs)) {
+						//the current board of chess is not null and also the chess will be marked as underattacked
+						if (bs[i][j].getChess() != null && bs[i][j].getChess().isEnemy() != this.isEnemy()) {
+							bs[i][j].getChess().setUnderAttack(true);
+						}
+						//input the walk way list
+						walkWayList.add(i * 100 + j);
+						//build a map reflection
+						walkWayMap.put(i * 100 + j, getCoorY() * 100 + getCoorX());
+
+					}
+				}
+			}
+		}
+
 		return walkWayList;
 	}
 
 	//for minimax
-	public ArrayList<Integer> searchWalkableWay(ChessBoard[][] bs){
+	public ArrayList<Integer> searchWalkableWay(ChessBoard[][] bs,int variantsNumber){
 		ArrayList<Integer> walkWayList=new ArrayList<Integer>();
-		for (int i = 0; i < 6; i++) {
-			for (int j = 3; j < 8; j++) {
-				if (isWalkable(bs[i][j], bs)) {
-					//the current board of chess is not null and also the chess will be marked as underattacked
-					if (bs[i][j].getChess()!=null&&bs[i][j].getChess().isEnemy()!=this.isEnemy()) {
-						bs[i][j].getChess().setUnderAttack(true);
-					}
-					//input the walk way list
-					walkWayList.add(i*10+j);
-					//build a map reflection
+		if(variantsNumber==0) {
+			for (int i = 0; i < 6; i++) {
+				for (int j = 3; j < 8; j++) {
+					if (isWalkable(bs[i][j], bs)) {
+						//the current board of chess is not null and also the chess will be marked as underattacked
+						if (bs[i][j].getChess() != null && bs[i][j].getChess().isEnemy() != this.isEnemy()) {
+							bs[i][j].getChess().setUnderAttack(true);
+						}
+						//input the walk way list
+						walkWayList.add(i * 100 + j);
 
+					}
 				}
 			}
 		}
+
+
+		if(variantsNumber==1) {
+			for (int i = 0; i < 9; i++) {
+				for (int j = 3; j < 12; j++) {
+					if (isWalkable(bs[i][j], bs)) {
+						//the current board of chess is not null and also the chess will be marked as underattacked
+						if (bs[i][j].getChess() != null && bs[i][j].getChess().isEnemy() != this.isEnemy()) {
+							bs[i][j].getChess().setUnderAttack(true);
+						}
+						//input the walk way list
+						walkWayList.add(i * 100 + j);
+
+					}
+				}
+			}
+		}
+
+		if(variantsNumber==2) {
+			for (int i = 0; i < 8; i++) {
+				for (int j = 3; j < 10; j++) {
+					if (isWalkable(bs[i][j], bs)) {
+						//the current board of chess is not null and also the chess will be marked as underattacked
+						if (bs[i][j].getChess() != null && bs[i][j].getChess().isEnemy() != this.isEnemy()) {
+							bs[i][j].getChess().setUnderAttack(true);
+						}
+						//input the walk way list
+						walkWayList.add(i * 100 + j);
+
+					}
+				}
+			}
+		}
+
 		return walkWayList;
 	}
 
@@ -181,6 +256,7 @@ public class Chess implements Serializable,Cloneable{
 	public String getName() {
 		return name;
 	}
+
 
 	public void setName(String name) {
 		this.name = name;

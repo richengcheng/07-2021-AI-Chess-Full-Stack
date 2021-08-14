@@ -12,7 +12,7 @@ public class Chick extends Chess {
 
 
     public Chick(int y, int x, boolean isEnemy) {
-        super(y, x, "Chick", 100, isEnemy);
+        super(y, x, "Chick", 200, isEnemy);
          firstPlace=y;
          IsPromoted=false;
     }
@@ -22,6 +22,7 @@ public class Chick extends Chess {
     public boolean checkIsPromotedNow(){
 
         if(IsPromoted){
+            this.setValue(550);
             return true;
         }
         // check if it is human being's chess

@@ -8,7 +8,7 @@ public class Dog extends Chess {
     private int firstPlace;
 
     public Dog(int y,int x,boolean isEnemy){
-        super(y,x,"Dog",600,isEnemy);
+        super(y,x,"Dog",550,isEnemy);
         firstPlace=y;
     }
 
