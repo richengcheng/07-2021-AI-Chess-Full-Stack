@@ -202,7 +202,6 @@ public class MinimaxAI  implements Runnable  {
 
 
 
-
         if (maximizingplayer) {
             int BestMove = -10000000;
             //each AI piece
@@ -213,13 +212,13 @@ public class MinimaxAI  implements Runnable  {
 
             //    if(depth==0) {
                     for (int k = 0; k < AIPieceListStore.size(); k++) {
-                        System.out.println("!!current depth       "+ depth+"                  !! get AIPieceList position " + AIPieceList.get(k).getCoorY() + "       " + AIPieceList.get(k).getCoorX());
+                        System.out.println("!!current depth       "+ depth+"                  !! get AIPieceList position " + AIPieceListStore.get(k).getCoorY() + "       " + AIPieceListStore.get(k).getCoorX());
                     }
             //    }
 
-                List<Integer> allCurrentChessWalkWayList = new ArrayList<Integer>();
+                List<Integer> allCurrentChessWalkWayList = new ArrayList<Integer>(AIPieceListStore.get(j).searchWalkableWay(currentChessBoard, variantsNumber));
                 //get walk way list of current piece
-                allCurrentChessWalkWayList = AIPieceList.get(j).searchWalkableWay(currentChessBoard, variantsNumber);
+             //   allCurrentChessWalkWayList = AIPieceListStore.get(j).searchWalkableWay(currentChessBoard, variantsNumber);
 
                 //check  each  walkable way  of current piece
                 for (int i = 0; i < allCurrentChessWalkWayList.size(); i++) {
@@ -252,7 +251,7 @@ public class MinimaxAI  implements Runnable  {
                         int X = allCurrentChessWalkWayList.get(i) % 100;
 
                         //store the current piece information
-                        Chess currentPiece = AIPieceList.get(j);
+                        Chess currentPiece = new Chess(AIPieceList.get(j));
 
 
                         // if current board does not contain a piece which is enemy piece and this board is main working board
@@ -369,6 +368,8 @@ public class MinimaxAI  implements Runnable  {
 
 
         System.out.println("k is "+k);
+
+
 /*
         System.out.println("6666666666666666666666666666666666666666666666 "+ChessInfo.AIChessList.
                 get(numberOfChess).getName());

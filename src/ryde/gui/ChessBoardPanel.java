@@ -360,7 +360,6 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
  	}
 
 
-
 	public int  setAIChess (boolean isEnemy,int chessTypeChecking,int numberOfCurrentTypeOfPiece,
 							int countNumberOfPiece,int variantsNumber){
 
@@ -870,6 +869,7 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 		}
 
 	}
+
 
 
 	public static void moveChess(ChessBoard presentChessBoard, ChessBoard clickBoard) {
@@ -1397,6 +1397,7 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 
 	}
 
+
 	public Chess  SetNewPiece (Chess chess,int Y,int X ){
 
 		if(chess.getName()=="Dog"){
@@ -1448,14 +1449,17 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 
 	}
 
+
 	public static void killChess(ChessBoard killedChessBoard) {
 		chessboard[killedChessBoard.getCoorY()][killedChessBoard.getCoorX()].setIcon(null);
 		chessboard[killedChessBoard.getCoorY()][killedChessBoard.getCoorX()].setChess(null);
 	}
 
+
 	public static boolean isPlayerTurn() {
 		return isPlayerTurn;
 	}
+
 
 	public  static void checkIsPromoted(ChessBoard presentChessBoard ){
 		//check if it is the chess that have promoted fucntion
@@ -1481,8 +1485,10 @@ public class ChessBoardPanel extends JPanel implements ActionListener{
 		}
 	};
 
+
 	public static void setPlayerTurn(boolean isPlayerTurn) {
 		ChessBoardPanel.isPlayerTurn = isPlayerTurn;
 	}
+
 
 }

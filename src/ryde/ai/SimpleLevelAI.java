@@ -111,7 +111,7 @@ public class SimpleLevelAI implements Runnable {
 	}
 
 	/**
-	 * Calculate the score for each move
+	 * Calculate the score for each move of exist piece which at main board
 	 */
 
 	public void countValue() {
@@ -184,6 +184,7 @@ public class SimpleLevelAI implements Runnable {
 				//The score of each move of the piece is saved into the list
 				eachWayValueList.add(highScore);
 				highScore = 0;
+
 			}
 
 			//The score list of each piece is saved into the total list
@@ -195,6 +196,9 @@ public class SimpleLevelAI implements Runnable {
 	//	System.out.println("allAIWalkWayValueList: " + allAIWalkWayValueList);
 	}
 
+	/**
+	 * Calculate the score for each move of captured piece which at waiting list board
+	 */
 
 	public void countCapturedPieceWalkWayValue(){
 		int highScore = 0;
@@ -210,6 +214,16 @@ public class SimpleLevelAI implements Runnable {
 					highScore++;
 					highScore++;
 					highScore=highScore+200;
+
+					//	if the player can also reach that walk way board, which means if AI go there, next around the AI piece will be token
+					// so totally it means this way is really really dangerous
+
+					if (allPlayerChesswalkWayMap.containsKey(allAICapturedChessWalkWayList.get(j))) {
+						//lose the score of the chess that will be token if go this way
+						highScore -= ChessInfo.AICapturedPieceList.get(i).getValue();
+					}
+
+
 				} else {// if there is a enemy piece at this current walk way board
 					Chess chess = ChessBoardPanel.chessboard[allAICapturedChessWalkWayList.get(j) / 100][allAICapturedChessWalkWayList.get(j) % 100].getChess();
 					//AI gets the chess piece and scores the chess piece
@@ -233,19 +247,37 @@ public class SimpleLevelAI implements Runnable {
 				}
 
 
-				//	if the player can also reach that walk way board, which means if AI go there, next around the AI piece will be token
-				// so totally it means this way is really really dangerous
 
-				if (allPlayerChesswalkWayMap.containsKey(allAICapturedChessWalkWayList.get(j))) {
-					//lose the score of the chess that will be token if go this way
-					highScore -= ChessInfo.AIChessList.get(i).getValue();
+				//The current maximum value of all AI chess pieces threatened
+				int maxValue = 0;
+				//AI chess pieces are threatened and unprotected
+				for (int j2 = 0; j2 < ChessInfo.AIChessList.size(); j2++) {
+					//Firstly the AI chess is under attack now
+					//Secondly the underattacked piece has no protection from other AI piece
+					//also, need to check that the AI piece is checking other AI piece's walkway
+					if (ChessInfo.AIChessList.get(j2).isUnderAttack() && !allAIChesswalkWayMap.containsKey(allAICapturedChessWalkWayList.get(j)) && j2 != i) {
+
+						if (ChessInfo.AIChessList.get(j2).getValue() > maxValue) {
+							maxValue = ChessInfo.AIChessList.get(j2).getValue();
+						}
+
+					}
+
 				}
+
+				//Deduct the maximum threat value points
+				highScore -= maxValue;
 
 
 				//The score of each move of the piece is saved into the list
 				eachWayValueList.add(highScore);
 				highScore = 0;
 			}
+
+
+
+
+
 
 			//The score list of each piece is saved into the total list
 			allAICapturedChessWalkWayValueList.add(eachWayValueList);

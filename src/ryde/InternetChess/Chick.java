@@ -22,7 +22,7 @@ public class Chick extends Chess {
     public boolean checkIsPromotedNow(){
 
         if(IsPromoted){
-            this.setValue(550);
+            this.setValue(500);
             return true;
         }
         // check if it is human being's chess

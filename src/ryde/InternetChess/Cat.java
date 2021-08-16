@@ -19,6 +19,7 @@ public class Cat extends Chess {
     //testing if the chess board can let chess promoted
     public boolean checkIsPromotedNow(){
         if(IsPromoted){
+            this.setValue(500);
             return true;
         }
 

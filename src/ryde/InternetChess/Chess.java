@@ -21,6 +21,18 @@ public class Chess implements Serializable,Cloneable{
 
 	}
 
+	public Chess( Chess chess) {
+
+		this.coorX = chess.getCoorX();
+		this.coorY = chess.getCoorY();
+		this.name = chess.getName();
+		this.isEnemy = chess.isEnemy();
+		this.value=chess.getValue();
+		hasSpecialWalkWay = false;
+		IsPromoted=false;
+
+	}
+
 	public Chess(int coorY, int coorX, String name,int value, boolean isEnemy) {
 		this.coorX = coorX;
 		this.coorY = coorY;
