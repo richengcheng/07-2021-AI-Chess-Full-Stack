@@ -10,6 +10,11 @@ import java.util.List;
 
 public class SimpleLevelAI implements Runnable {
 
+
+	public HashMap<Integer, Integer> allAIChesswalkWayMap = new HashMap<Integer, Integer>();
+	public HashMap<Integer, Integer> allAICapturedChessWalkWayMap = new HashMap<Integer, Integer>();
+
+
 	private List<List<Integer>> allAIChessWalkWayList = new ArrayList<List<Integer>>();
 	private List<Integer> allAICapturedChessWalkWayList = new ArrayList<Integer>();
 
@@ -19,9 +24,6 @@ public class SimpleLevelAI implements Runnable {
 	private List<List<Integer>> allPlayerChessWalkWayList = new ArrayList<List<Integer>>();
 
 	public static HashMap<Integer, Integer> allPlayerChesswalkWayMap = new HashMap<Integer, Integer>();
-
-	public HashMap<Integer, Integer> allAIChesswalkWayMap = new HashMap<Integer, Integer>();
-	public HashMap<Integer, Integer> allAICapturedChessWalkWayMap = new HashMap<Integer, Integer>();
 
 	private boolean  checkingIsCapturedList= false;
 	private int  variantsNumber;

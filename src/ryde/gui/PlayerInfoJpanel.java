@@ -16,23 +16,23 @@ public class PlayerInfoJpanel extends JPanel implements Runnable{
 	private int time=0;
 	private  boolean isMyTurn;
 	private  boolean isEnemyChekcing;
-	private JLabel headPicLabel,backgroundLabel;
-	private JLabel[] clockLabel;
-	private ImageIcon headIcon;
-	private ImageIcon[] clockIcon;
+	private JLabel headPictureLabel,backgroundLabel;
+	private JLabel[] LabelOfClock;
+	private ImageIcon TheheadIcon;
+	private ImageIcon[] clockImage;
 	private static boolean isNameUsed=false;
 	public PlayerInfoJpanel(boolean isEnemy,boolean isEnemyChekcing){
 		this.isEnemyChekcing=isEnemyChekcing;
 		//super();
-		headIcon=new ImageIcon("images/default1.jpg");
-		clockIcon=new ImageIcon[10];
-		for (int i = 0; i < clockIcon.length; i++) {
-			clockIcon[i]=new ImageIcon("images/"+i+".png");
+		TheheadIcon=new ImageIcon("images/default1.jpg");
+		clockImage=new ImageIcon[10];
+		for (int i = 0; i < clockImage.length; i++) {
+			clockImage[i]=new ImageIcon("images/"+i+".png");
 		}
 		this.setLayout(null);
-		headPicLabel =new JLabel();
-		headPicLabel.setIcon(headIcon);
-		headPicLabel.setBounds(0, 0, 50, 50);
+		headPictureLabel =new JLabel();
+		headPictureLabel.setIcon(TheheadIcon);
+		headPictureLabel.setBounds(0, 0, 50, 50);
 		//headPicLabel.setSize(50, 50);
 		String name="human beings";
 		if (isNameUsed) {
@@ -42,14 +42,14 @@ public class PlayerInfoJpanel extends JPanel implements Runnable{
 		backgroundLabel=new JLabel(name);
 		backgroundLabel.setBounds(50, 0, 50, 50);
 		backgroundLabel.setBackground(new Color(0,0,0));
-		this.add(headPicLabel);
+		this.add(headPictureLabel);
 		this.add(backgroundLabel);
-		clockLabel=new JLabel[4];
+		LabelOfClock=new JLabel[4];
 		for(int i=0;i<4;i++){
-			clockLabel[i]=new JLabel();
-			clockLabel[i].setIcon(clockIcon[0]);
-			clockLabel[i].setBounds(100+i*25, 0, 25, 50);
-			this.add(clockLabel[i]);
+			LabelOfClock[i]=new JLabel();
+			LabelOfClock[i].setIcon(clockImage[0]);
+			LabelOfClock[i].setBounds(100+i*25, 0, 25, 50);
+			this.add(LabelOfClock[i]);
 		}
 		
 		this.setSize(200, 50);
@@ -68,10 +68,10 @@ public class PlayerInfoJpanel extends JPanel implements Runnable{
 				int sec2 = time % 60 / 10;
 				int min1 = time / 60 % 60 % 10;
 				int min2 = time / 60 % 60 / 10;
-				clockLabel[3].setIcon(clockIcon[sec1]);
-				clockLabel[2].setIcon(clockIcon[sec2]);
-				clockLabel[1].setIcon(clockIcon[min1]);
-				clockLabel[0].setIcon(clockIcon[min2]);
+				LabelOfClock[3].setIcon(clockImage[sec1]);
+				LabelOfClock[2].setIcon(clockImage[sec2]);
+				LabelOfClock[1].setIcon(clockImage[min1]);
+				LabelOfClock[0].setIcon(clockImage[min2]);
 				time++;
 			}
 			try {

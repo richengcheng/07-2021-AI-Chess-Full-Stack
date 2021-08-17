@@ -2,6 +2,8 @@ package ryde.controller;
 
 import ryde.battle.ChessInfo;
 import ryde.gui.ChessBoardPanel;
+import ryde.InternetChess.Chess;
+
 
 public class PieceUpdatingController {
 
@@ -11,7 +13,14 @@ public class PieceUpdatingController {
     {
         this.variantsNumber=variantsNumber;
     }
-
+    public static void AIgetpiece(Chess chessExange2, Chess chessExange){
+        ChessInfo.playerChessList.remove(chessExange2);
+        ChessInfo.AICapturedPieceList.add(chessExange);
+    }
+    public static void Playergetpiece(Chess chessExange2, Chess chessExange){
+        ChessInfo.AIChessList.remove(chessExange2);
+        ChessInfo.PlayerCapturedPieceList.add(chessExange);
+    }
     public  static  void updateCapturedChessList(int variantsNumber){
         //clear waiting board
 

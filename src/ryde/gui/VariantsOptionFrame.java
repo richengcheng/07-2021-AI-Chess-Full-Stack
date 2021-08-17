@@ -24,9 +24,9 @@ public class VariantsOptionFrame extends JFrame implements ActionListener  {
     this.contentPane = new JPanel();
     this.contentPane.setLayout(null);
 
-    fiveTimesSix=new JButton("Play fiveTimesSix board");
-    threeTimesFour=new JButton("Play Dobutsu shogi");
-    fiveTimesFive=new JButton("Play Minishogi");
+    fiveTimesSix=new JButton("Play 5Times6 board");
+    threeTimesFour=new JButton("Play 9Times9 board");
+    fiveTimesFive=new JButton("Play 7Tiems8 board");
     addButton(fiveTimesSix,130, 150, 190, 30);
     addButton(threeTimesFour,150, 200, 150, 30);
     addButton(fiveTimesFive,150, 250, 150, 30);

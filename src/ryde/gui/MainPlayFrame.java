@@ -79,7 +79,7 @@ public class MainPlayFrame extends JFrame implements ActionListener {
 		}
 
 		if (AIlevel==1) {
-			MinimaxAI minimaxAI=new MinimaxAI(variantsNumber);
+			SimpleLevelAI minimaxAI=new SimpleLevelAI(variantsNumber);
 			Thread thread=new Thread(minimaxAI);
 			thread.start();
 		}
